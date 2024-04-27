@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using __Scripts.Board;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -13,9 +14,8 @@ public class PlayerMouseController : MonoBehaviour
     
     private DefaultInputActions _playerInput;
     private Camera _mainCam;
-    private Player _playerTurn;
 
-    public UnityEvent<Vector3, Player> OnBoardPieceClicked;
+    public UnityEvent<Vector3, BoardPiece> OnBoardPieceClicked;
 
     private void Awake()
     {
@@ -28,7 +28,6 @@ public class PlayerMouseController : MonoBehaviour
     private void Start()
     {
         _mainCam = Camera.main;
-        _playerTurn = gameStateData.playerTurn;
     }
 
     private void OnEnable()
@@ -54,13 +53,11 @@ public class PlayerMouseController : MonoBehaviour
 
         if (Physics.Raycast(mousePos, out hit, 100f, _boardPiece))
         {
-            OnBoardPieceClicked?.Invoke(hit.transform.position, _playerTurn);
-            
-            if (_playerTurn == Player.Blue) gameStateData.numBluePieces++;
-            else gameStateData.numRedPieces++;
-            
-            _playerTurn = _playerTurn == Player.Blue ? Player.Red : Player.Blue;
-            Debug.Log($"Hit object {hit.transform.name} | transform: {hit.transform.position}");
+            if (hit.transform.TryGetComponent<BoardPiece>(out BoardPiece piece))
+            {
+                OnBoardPieceClicked?.Invoke(hit.transform.position, piece);
+                Debug.Log($"Hit object {hit.transform.name} | transform: {hit.transform.position}");
+            }
         }
 
         

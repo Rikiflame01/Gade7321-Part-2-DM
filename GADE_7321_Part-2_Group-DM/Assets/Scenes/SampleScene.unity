@@ -260,6 +260,50 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!1 &367335875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 367335877}
+  - component: {fileID: 367335876}
+  m_Layer: 0
+  m_Name: PieceCaptureHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &367335876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367335875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c517e26018936204fbcef3ba4cbfda97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &367335877
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367335875}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.4308167, y: -0.062402725, z: 17.314358}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,6 +531,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1389784837}
   - component: {fileID: 1389784838}
+  - component: {fileID: 1389784839}
   m_Layer: 0
   m_Name: BoardManager
   m_TagString: Untagged
@@ -525,6 +570,35 @@ MonoBehaviour:
     type: 3}
   redSpherePrefab: {fileID: 8338550054972058726, guid: 2285f8985830d45428dd25d5593ee2c1,
     type: 3}
+--- !u!114 &1389784839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389784836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b6a380d652bd4f4d958fc35bffe8172, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameStateData: {fileID: 11400000, guid: af004838f024f4248bcad3931e6c9538, type: 2}
+  _pieceSpawner: {fileID: 1389784838}
+  OnPiecePlaced:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 367335876}
+        m_TargetAssemblyTypeName: PieceCaptureHandler, Assembly-CSharp
+        m_MethodName: CheckIfPieceCaptured
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2120536722
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,9 +650,9 @@ MonoBehaviour:
   OnBoardPieceClicked:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1389784838}
-        m_TargetAssemblyTypeName: PieceSpawner, Assembly-CSharp
-        m_MethodName: SpawnSphere
+      - m_Target: {fileID: 1389784839}
+        m_TargetAssemblyTypeName: BoardManager, Assembly-CSharp
+        m_MethodName: TryPlacePiece
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -646,3 +720,4 @@ SceneRoots:
   - {fileID: 2142774090}
   - {fileID: 2120536724}
   - {fileID: 1389784837}
+  - {fileID: 367335877}

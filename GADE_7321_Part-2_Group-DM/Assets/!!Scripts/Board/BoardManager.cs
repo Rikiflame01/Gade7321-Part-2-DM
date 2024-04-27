@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using __Scripts.Board;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BoardManager : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class BoardManager : MonoBehaviour
     private string[,] boardFive = new string[5, 5];
     private string[,] boardSix = new string[5, 5];
 
+    public UnityEvent<string[,], int, int, string> OnPiecePlaced;
+
     private void Awake()
     {
         gameStateData.currentBoard = 1;
@@ -38,13 +41,13 @@ public class BoardManager : MonoBehaviour
     {
         if (boardPiece.IsPieceOccupied())
         {
-            Debug.Log("Piece is occupied");
+            Debug.LogError("Piece is occupied");
             return;
         }
         
         Debug.Log("Piece is not occupied");
-        _pieceSpawner.SpawnSphere(position, _playerTurn);
-        boardPiece.PlacePiece();
+        _pieceSpawner.SpawnSphere(position, _playerTurn, out GameObject piece);
+        boardPiece.PlacePiece(piece);
         PlacePieceOnBoard((int)boardPiece.Coordinates.x, (int)boardPiece.Coordinates.y, _playerTurn.ToString());
         ChangePlayerTurn();
     }
@@ -55,11 +58,55 @@ public class BoardManager : MonoBehaviour
     {
         switch (gameStateData.currentBoard)
         {
-            case 0:
+            case 1:
                 boardOne[x, y] = piece;
+                ShowBoard(boardOne);
+                OnPiecePlaced?.Invoke(boardOne, x, y, _playerTurn.ToString());
+                break;
+            case 2:
+                boardTwo[x, y] = piece;
+                ShowBoard(boardTwo);
+                OnPiecePlaced?.Invoke(boardTwo, x, y, _playerTurn.ToString());
+                break;
+            case 3:
+                boardThree[x, y] = piece;
+                ShowBoard(boardThree);
+                break;
+            case 4:
+                boardFour[x, y] = piece;
+                ShowBoard(boardFour);
+                break;
+            case 5:
+                boardFive[x, y] = piece;
+                ShowBoard(boardFive);
+                break;
+            case 6:
+                boardSix[x, y] = piece;
+                ShowBoard(boardSix);
                 break;
         }
     }
+
+    #region Debugging
+
+    void ShowBoard(string[,] board)
+    {
+        string debugBoard = "";
+        Debug.Log($"Show current board: {gameStateData.currentBoard}");
+        for (int i = 0; i < board.GetLength(0); i++)
+        {
+            for (int j = 0; j < board.GetLength(1); j++)
+            {
+                debugBoard += board[i, j] + " ";
+            }
+
+            debugBoard += "\n";
+        }
+        
+        Debug.Log(debugBoard);
+    }
+
+    #endregion
     
     #region  Board Setup
 

@@ -119,4 +119,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOccupied: 0
-  <Coordinates>k__BackingField: {x: 0, y: 0}
+  <Coordinates>k__BackingField: {x: 0, y: 0, z: 0}
+  redMat: {fileID: 2100000, guid: f9c44c7d9ed534342a3d8f3e23cb2801, type: 2}
+  blueMat: {fileID: 2100000, guid: 3f2d2baa945d2544dacd4b46a15b171f, type: 2}
