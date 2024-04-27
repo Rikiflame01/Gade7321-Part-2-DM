@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using __Scripts.Board;
 using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
     [Header("References")] 
     [SerializeField] private GameStateData gameStateData;
+
+    [SerializeField] private PieceSpawner _pieceSpawner;
 
     private int _numPiecesOnBoard;
 
@@ -23,6 +26,11 @@ public class BoardManager : MonoBehaviour
     }
 
     private void Start()
+    {
+        
+    }
+
+    public void TryPlacePiece(Vector3 position, BoardPiece boardPiece)
     {
         
     }
