@@ -5,7 +5,7 @@ namespace __Scripts.Board
     public class BoardPiece : MonoBehaviour
     {
         [SerializeField] private bool isOccupied;
-        [field: SerializeField] public Vector2 Coordinates { get; private set; }
+        [field: SerializeField] public Vector3 Coordinates { get; set; }
 
         public void PlacePiece()
         {
