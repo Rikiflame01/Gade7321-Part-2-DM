@@ -4,6 +4,7 @@ public class PlayerCameraController : MonoBehaviour
 {
     public GridManager gridManager; 
     public float sensitivity = 300f;
+    public bool stopMovement;
 
     private float currentRotationX = -45f;
     private float currentRotationY = 45f;
@@ -11,6 +12,7 @@ public class PlayerCameraController : MonoBehaviour
 
     void Start()
     {
+        if (stopMovement) return;
         Cursor.lockState = CursorLockMode.Locked;
         if (gridManager != null)
         {
@@ -21,6 +23,7 @@ public class PlayerCameraController : MonoBehaviour
 
     void Update()
     {
+        if (stopMovement) return;
         if (gridManager != null)
             CameraControl(gridManager.GridCenter);
     }

@@ -209,8 +209,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.046, y: 0.08, z: -0.088}
+  m_LocalRotation: {x: -0.092875406, y: -0.00030091716, z: 0.000028057611, w: -0.9956777}
+  m_LocalPosition: {x: -0.22753191, y: 33.504135, z: 46.89595}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -477,6 +477,117 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1389784836
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1389784837}
+  - component: {fileID: 1389784838}
+  m_Layer: 0
+  m_Name: BoardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1389784837
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389784836}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.0212865, y: 1.9051636, z: 9.850909}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1389784838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389784836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a10dab4312bca44e80fb89452b56f40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blueSpherePrefab: {fileID: 3262811514825071465, guid: 23dd7755d14d4eb41bd4a31d02d5ecf9,
+    type: 3}
+  redSpherePrefab: {fileID: 8338550054972058726, guid: 2285f8985830d45428dd25d5593ee2c1,
+    type: 3}
+--- !u!1 &2120536722
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2120536724}
+  - component: {fileID: 2120536725}
+  m_Layer: 0
+  m_Name: MouseController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2120536724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2120536722}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2120536725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2120536722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b09f708f03a24cb4ea481c65c589b72c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _boardPiece:
+    serializedVersion: 2
+    m_Bits: 8
+  gameStateData: {fileID: 11400000, guid: af004838f024f4248bcad3931e6c9538, type: 2}
+  OnBoardPieceClicked:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1389784838}
+        m_TargetAssemblyTypeName: PieceSpawner, Assembly-CSharp
+        m_MethodName: SpawnSphere
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2142774088
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,6 +619,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridManager: {fileID: 575679492}
   sensitivity: 100
+  stopMovement: 1
 --- !u!4 &2142774090
 Transform:
   m_ObjectHideFlags: 0
@@ -532,3 +644,5 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 575679493}
   - {fileID: 2142774090}
+  - {fileID: 2120536724}
+  - {fileID: 1389784837}
