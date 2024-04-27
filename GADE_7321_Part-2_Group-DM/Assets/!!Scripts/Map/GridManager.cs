@@ -24,8 +24,12 @@ public class GridManager : MonoBehaviour
             {
                 for (int z = 0; z < depth; z++)
                 {
-                    Vector3 position = new Vector3(x * spacing, y * spacing, z * spacing);
-                    Instantiate(cubePrefab, position, Quaternion.identity, transform);
+                   
+                    if (x == 0 || x == width - 1 || y == 0 || y == height - 1 || z == 0 || z == depth - 1)
+                    {
+                        Vector3 position = new Vector3(x * spacing, y * spacing, z * spacing);
+                        Instantiate(cubePrefab, position, Quaternion.identity, transform);
+                    }
                 }
             }
         }
@@ -35,5 +39,4 @@ public class GridManager : MonoBehaviour
     {
         GridCenter = new Vector3((width - 1) * spacing / 2, (height - 1) * spacing / 2, (depth - 1) * spacing / 2);
     }
-
 }
