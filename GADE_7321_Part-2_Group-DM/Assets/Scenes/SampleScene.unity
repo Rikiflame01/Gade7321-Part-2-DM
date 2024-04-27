@@ -409,9 +409,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubePrefab: {fileID: 9179772944978370756, guid: 8794d8974d6c77140a2787c8a1bd1f7d,
     type: 3}
-  width: 8
-  height: 8
-  depth: 8
+  width: 5
+  height: 5
+  depth: 5
   spacing: 1.1
 --- !u!4 &575679493
 Transform:
