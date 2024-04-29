@@ -28,10 +28,10 @@ public class GridManager : MonoBehaviour
                    
                     if (x == 0 || x == width - 1 || y == 0 || y == height - 1 || z == 0 || z == depth - 1)
                     {
-                        Vector3 position = new Vector3(x * spacing, y * spacing, z * spacing);
+                        Vector3 position = new Vector3(x * spacing, y * -spacing, z * spacing);
                         GameObject obj = Instantiate(cubePrefab, position, Quaternion.identity, transform);
                         BoardPiece piece = obj.GetComponent<BoardPiece>();
-                        piece.Coordinates = new Vector3(x, y, z);
+                        piece.Coordinates = new Vector3(y, x, z);
                     }
                 }
             }
@@ -40,6 +40,6 @@ public class GridManager : MonoBehaviour
 
     void CalculateCenter()
     {
-        GridCenter = new Vector3((width - 1) * spacing / 2, (height - 1) * spacing / 2, (depth - 1) * spacing / 2);
+        GridCenter = new Vector3((width - 1) * spacing / 2, (height - 1) * -spacing / 2, (depth - 1) * spacing / 2);
     }
 }

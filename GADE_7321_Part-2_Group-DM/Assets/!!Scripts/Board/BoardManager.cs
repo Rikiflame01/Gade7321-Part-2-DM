@@ -9,20 +9,24 @@ public class BoardManager : MonoBehaviour
 {
     [Header("References")] 
     [SerializeField] private GameStateData gameStateData;
-
+    [SerializeField] private int gameEndAmount = 120;
     [SerializeField] private PieceSpawner _pieceSpawner;
 
+    public int NumberOfPiecesPlayed => _numPiecesOnBoard;
+
     private int _numPiecesOnBoard;
+    private bool isGameEnd;
     private Player _playerTurn;
     
-    private string[,] boardOne = new string[5, 5];
-    private string[,] boardTwo = new string[5, 5];
-    private string[,] boardThree = new string[5, 5];
-    private string[,] boardFour = new string[5, 5];
-    private string[,] boardFive = new string[5, 5];
-    private string[,] boardSix = new string[5, 5];
+    private string[,] boardOne = new string[5, 5]; //Front Face on start
+    private string[,] boardTwo = new string[5, 5]; //Too the right of one
+    private string[,] boardThree = new string[5, 5]; //Opposite of one
+    private string[,] boardFour = new string[5, 5]; //Too left of one 
+    private string[,] boardFive = new string[5, 5]; // Top of one
+    private string[,] boardSix = new string[5, 5]; //Bottom of one
 
     public UnityEvent<string[,], int, int, string> OnPiecePlaced;
+    public UnityEvent OnEndGame;
 
     private void Awake()
     {
@@ -39,17 +43,24 @@ public class BoardManager : MonoBehaviour
 
     public void TryPlacePiece(Vector3 position, BoardPiece boardPiece)
     {
-        if (boardPiece.IsPieceOccupied())
+        if (boardPiece.IsPieceOccupied() || isGameEnd)
         {
-            Debug.LogError("Piece is occupied");
+            Debug.LogError("Piece is occupied, OR game has ended");
             return;
         }
         
         Debug.Log("Piece is not occupied");
-        _pieceSpawner.SpawnSphere(position, _playerTurn, out GameObject piece);
-        boardPiece.PlacePiece(piece);
+        boardPiece.PlacePiece(_pieceSpawner.SpawnSphere(position, _playerTurn));
         PlacePieceOnBoard((int)boardPiece.Coordinates.x, (int)boardPiece.Coordinates.y, _playerTurn.ToString());
         ChangePlayerTurn();
+        _numPiecesOnBoard++;
+        if (_numPiecesOnBoard >= gameEndAmount)
+        {
+            isGameEnd = true;
+            OnEndGame?.Invoke();
+        }
+        
+        
     }
 
     void ChangePlayerTurn() { _playerTurn = _playerTurn == Player.Blue ? Player.Red : Player.Blue; }
@@ -59,33 +70,66 @@ public class BoardManager : MonoBehaviour
         switch (gameStateData.currentBoard)
         {
             case 1:
+                
                 boardOne[x, y] = piece;
-                ShowBoard(boardOne);
+                PlaceEdgePiece(boardFive, boardSix, boardFour, boardTwo,
+                    x,y, piece);
                 OnPiecePlaced?.Invoke(boardOne, x, y, _playerTurn.ToString());
+                ShowBoard(boardFive);
                 break;
             case 2:
                 boardTwo[x, y] = piece;
-                ShowBoard(boardTwo);
+                PlaceEdgePiece(boardFive, boardSix, boardOne, boardThree,
+                    x,y, piece);
                 OnPiecePlaced?.Invoke(boardTwo, x, y, _playerTurn.ToString());
                 break;
             case 3:
                 boardThree[x, y] = piece;
-                ShowBoard(boardThree);
+                PlaceEdgePiece(boardFive, boardSix, boardTwo, boardFour,
+                    x,y, piece);
                 break;
             case 4:
                 boardFour[x, y] = piece;
-                ShowBoard(boardFour);
+                PlaceEdgePiece(boardFive, boardSix, boardThree, boardOne,
+                    x,y, piece);
                 break;
             case 5:
                 boardFive[x, y] = piece;
+                PlaceEdgePiece(boardOne, boardThree, boardTwo, boardFour,
+                    x,y, piece);
                 ShowBoard(boardFive);
                 break;
             case 6:
                 boardSix[x, y] = piece;
-                ShowBoard(boardSix);
+                PlaceEdgePiece(boardOne, boardThree, boardTwo, boardFour,
+                    x,y, piece);
                 break;
         }
     }
+
+    void PlaceEdgePiece(string[,] boardAbove, string[,] boardBelow, string[,] boardLeft, string[,] boardRight, int row, int col, string piece)
+    {
+        if (row == 0)
+        {
+            boardAbove[4, col] = piece;
+        }
+
+        if (col == 0)
+        {
+            boardLeft[row, 4] = piece;
+        }
+
+        if (row == 4)
+        {
+            boardBelow[0, col] = piece;
+        }
+
+        if (col == 4)
+        {
+            boardRight[row, 0] = piece;
+        }
+    }
+    
 
     #region Debugging
 
@@ -104,6 +148,12 @@ public class BoardManager : MonoBehaviour
         }
         
         Debug.Log(debugBoard);
+    }
+
+    public void ShowBoard()
+    {
+        Debug.Log("Board One");
+        ShowBoard(boardOne);
     }
 
     #endregion

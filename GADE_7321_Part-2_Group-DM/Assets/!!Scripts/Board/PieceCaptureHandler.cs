@@ -65,7 +65,7 @@ public class PieceCaptureHandler : MonoBehaviour
 
     private void ShowBoard(string[,] board)
     {
-        Debug.Log("Show Captured Board");
+        Debug.Log($"Show Captured Board {board.ToString()}");
         string debugBoard = "";
         for (int i = 0; i < board.GetLength(0); i++)
         {
