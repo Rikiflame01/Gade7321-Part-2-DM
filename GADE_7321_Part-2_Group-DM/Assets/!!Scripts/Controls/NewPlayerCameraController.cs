@@ -24,6 +24,7 @@ public class NewPlayerCameraController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1)) // Right mouse button
         {
+            ResetView();
             isCursorLocked = !isCursorLocked;
             ToggleCursorState();
         }
