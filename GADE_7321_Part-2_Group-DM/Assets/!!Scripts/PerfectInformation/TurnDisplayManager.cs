@@ -17,7 +17,7 @@ public class TurnDisplayManager : MonoBehaviour
         {
         // Blue always goes first, so check which player is Blue
         string firstPlayerName = (playerInfo.player1.playerColour == "Blue") ? playerInfo.player1.playerName : playerInfo.player2.playerName;
-        turnTextDisplay.text = $"{firstPlayerName} (Blue)";   
+        turnTextDisplay.text = $"{firstPlayerName}";   
         }
 
     }
