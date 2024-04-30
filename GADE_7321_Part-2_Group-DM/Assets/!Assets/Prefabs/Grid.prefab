@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9567111332952728}
   - component: {fileID: 8411926523000487124}
   - component: {fileID: -5283079923874481591}
+  - component: {fileID: -4257023128281344838}
   m_Layer: 3
   m_Name: Grid
   m_TagString: Untagged
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9d7fced93fbccf24ab686e5c4d09a87e, type: 2}
+  - {fileID: 2100000, guid: c39ad86c0fd5b2b4fb9bcd7d794684d4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -120,3 +121,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isOccupied: 0
   <Coordinates>k__BackingField: {x: 0, y: 0, z: 0}
+--- !u!114 &-4257023128281344838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179772944978370756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dba5efdbdf98fd4196e09210e02d98b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineMaterial: {fileID: 2100000, guid: 6b6f0d289360f1e42a2bbe5c36f3fff4, type: 2}
