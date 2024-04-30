@@ -59,6 +59,7 @@ public class BoardTracker : MonoBehaviour
         if (boardText != null)
         {
             boardText.text = $"{boardIndex + 1}";
+
         }
         else
         {
