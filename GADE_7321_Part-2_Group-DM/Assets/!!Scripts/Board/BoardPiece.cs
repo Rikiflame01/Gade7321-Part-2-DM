@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace __Scripts.Board
@@ -42,7 +43,24 @@ namespace __Scripts.Board
         {
             _material = blue ? blueMat : redMat;
             if (spherePiece == null) return;
-            spherePiece.GetComponent<MeshRenderer>().material = _material;
+            StartCoroutine(ChangeColour(spherePiece.GetComponent<MeshRenderer>().material.color, _material.color));
+            
+        }
+
+        IEnumerator ChangeColour(Color from, Color to)
+        {
+            float duration = 1f;
+            float elapsedTime = 0f;
+            
+            while (elapsedTime <= duration)
+            {
+                elapsedTime+= Time.deltaTime;
+                float progress = elapsedTime / duration;
+                spherePiece.GetComponent<MeshRenderer>().material.color = Color.Lerp(from, to, progress);
+                yield return null;
+            }
+
+            spherePiece.GetComponent<MeshRenderer>().material.color = to;
         }
     }
 }

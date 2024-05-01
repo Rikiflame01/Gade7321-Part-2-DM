@@ -15,4 +15,4 @@ MonoBehaviour:
   playerTurn: 0
   numRedPieces: 0
   numBluePieces: 0
-  currentBoard: 0
+  currentBoard: 1

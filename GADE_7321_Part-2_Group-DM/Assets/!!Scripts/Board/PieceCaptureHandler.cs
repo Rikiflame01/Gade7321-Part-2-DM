@@ -7,6 +7,9 @@ using UnityEngine;
 public class PieceCaptureHandler : MonoBehaviour
 {
     [SerializeField] private List<BoardPiece> pieces;
+    
+    // Directions vectors for diagonals: northeast, northwest, southeast, southwest
+    int[,] _directions = new int[,] { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
 
     private void Start()
     {
@@ -20,16 +23,48 @@ public class PieceCaptureHandler : MonoBehaviour
 
     public void CheckIfPieceCaptured(string[,] board, int x, int y, string currentPlayerColor)
     {
+        
+        int size = board.GetLength(0); // Assuming the board is square
+        string oppositeColour = currentPlayerColor == "Blue" ? "Red" : "Blue";
+        
+        for (int i = 0; i < _directions.GetLength(0); i++)
+        {
+            int dx = _directions[i, 0];
+            int dy = _directions[i, 1];
+
+            // Check the first diagonal position
+            int x1 = x + dx;
+            int y1 = y + dy;
+
+            // Check the second diagonal position
+            int x2 = x + -1 * dx;
+            int y2 = y + -1 * dy;
+
+            // Check bounds and conditions for capture
+            if (IsInBounds(x1, y1, size) && IsInBounds(x2, y2, size))
+            {
+                if (board[x1, y1] == oppositeColour && board[x2, y2] == oppositeColour)
+                {
+                    Debug.Log("***New Capture:***");
+                    board[x, y] = oppositeColour;  // Capture the piece
+                    ChangePieceVisual(x, y, oppositeColour == "Blue");
+                }
+                
+            }
+        }
+        
+        ShowBoard(board);
+    }
+
+    public void CheckIfCapturedPiece(string[,] board, int x, int y, string currentPlayerColor)
+    {
         Debug.LogWarning("Piece capture");
         int size = board.GetLength(0);  // Assuming the board is square
-
-        // Directions vectors for diagonals: northeast, northwest, southeast, southwest
-        int[,] directions = new int[,] { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
-
-        for (int i = 0; i < directions.GetLength(0); i++)
+        
+        for (int i = 0; i < _directions.GetLength(0); i++)
         {
-            int dx = directions[i, 0];
-            int dy = directions[i, 1];
+            int dx = _directions[i, 0];
+            int dy = _directions[i, 1];
 
             // Check the first diagonal position
             int nx = x + dx;
@@ -42,11 +77,13 @@ public class PieceCaptureHandler : MonoBehaviour
             // Check bounds and conditions for capture
             if (IsInBounds(nx, ny, size) && IsInBounds(nnx, nny, size))
             {
-                if (board[nx, ny] != currentPlayerColor && board[nx, ny] != "" && board[nnx, nny] == currentPlayerColor)
+                if (board[nx, ny] != currentPlayerColor && board[nx, ny] != "_" && board[nnx, nny] == currentPlayerColor)
                 {
                     board[nx, ny] = currentPlayerColor;  // Capture the piece
+                    Debug.Log($"Piece Captured at {x} and {y} piece: {currentPlayerColor}");
                     ChangePieceVisual(nx, ny, currentPlayerColor == "Blue");
                 }
+                
             }
         }
         
@@ -65,7 +102,6 @@ public class PieceCaptureHandler : MonoBehaviour
 
     private void ShowBoard(string[,] board)
     {
-        Debug.Log($"Show Captured Board {board.ToString()}");
         string debugBoard = "";
         for (int i = 0; i < board.GetLength(0); i++)
         {

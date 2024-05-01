@@ -87,22 +87,26 @@ public class BoardManager : MonoBehaviour
                 boardThree[x, y] = piece;
                 PlaceEdgePiece(boardFive, boardSix, boardTwo, boardFour,
                     x,y, piece);
+                OnPiecePlaced?.Invoke(boardThree, x, y, _playerTurn.ToString());
                 break;
             case 4:
                 boardFour[x, y] = piece;
                 PlaceEdgePiece(boardFive, boardSix, boardThree, boardOne,
                     x,y, piece);
+                OnPiecePlaced?.Invoke(boardFour, x, y, _playerTurn.ToString());
                 break;
             case 5:
                 boardFive[x, y] = piece;
                 PlaceEdgePiece(boardOne, boardThree, boardTwo, boardFour,
                     x,y, piece);
+                OnPiecePlaced?.Invoke(boardFive, x, y, _playerTurn.ToString());
                 ShowBoard(boardFive);
                 break;
             case 6:
                 boardSix[x, y] = piece;
                 PlaceEdgePiece(boardOne, boardThree, boardTwo, boardFour,
                     x,y, piece);
+                OnPiecePlaced?.Invoke(boardSix, x, y, _playerTurn.ToString());
                 break;
         }
     }
@@ -154,6 +158,11 @@ public class BoardManager : MonoBehaviour
     {
         Debug.Log("Board One");
         ShowBoard(boardOne);
+    }
+
+    public void ChangeBoardNum(int num)
+    {
+        gameStateData.currentBoard = num;
     }
 
     #endregion

@@ -25,7 +25,6 @@ public class GridManager : MonoBehaviour
             {
                 for (int z = 0; z < depth; z++)
                 {
-                   
                     if (x == 0 || x == width - 1 || y == 0 || y == height - 1 || z == 0 || z == depth - 1)
                     {
                         Vector3 position = new Vector3(x * spacing, y * -spacing, z * spacing);
