@@ -9,10 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43a89ab018df7c046b1b35c33340c644, type: 3}
-  m_Name: GameState
+  m_Script: {fileID: 11500000, guid: 6c3e65da0126b6b4b9f1167a46447ea5, type: 3}
+  m_Name: PlayerInfo
   m_EditorClassIdentifier: 
-  playerTurn: 0
-  numRedPieces: 50
-  numBluePieces: 59
-  currentBoard: 0
+  player1:
+    playerName: 
+    playerColour: 
+  player2:
+    playerName: 
+    playerColour: 

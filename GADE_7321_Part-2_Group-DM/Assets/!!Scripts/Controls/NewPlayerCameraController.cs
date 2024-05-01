@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerCameraController : MonoBehaviour
+public class NewPlayerCameraController : MonoBehaviour
 {
     public GridManager gridManager;
     public float sensitivity = 300f;
@@ -24,6 +24,7 @@ public class PlayerCameraController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1)) // Right mouse button
         {
+            ResetView();
             isCursorLocked = !isCursorLocked;
             ToggleCursorState();
         }
