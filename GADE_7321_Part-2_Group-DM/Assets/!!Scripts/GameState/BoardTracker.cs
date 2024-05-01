@@ -1,14 +1,23 @@
+using System;
 using UnityEngine;
 using TMPro;
 
 public class BoardTracker : MonoBehaviour
 {
     public GameObject[] empties;
+    public GameObject[] boardFaces;
     public GameStateData gameStateData;
     public TextMeshProUGUI boardText;
 
     private GameObject currentClosestEmpty;
     private int currentBoardIndex = -1;
+
+    private GameObject previousBoardFace;
+
+    private void Start()
+    {
+        previousBoardFace = boardFaces[0];
+    }
 
     void Update()
     {
@@ -37,6 +46,9 @@ public class BoardTracker : MonoBehaviour
             currentClosestEmpty = closestEmpty;
             currentBoardIndex = closestIndex;
             UpdateGameStateData(currentBoardIndex);
+            previousBoardFace.SetActive(false);
+            previousBoardFace = boardFaces[closestIndex];
+            previousBoardFace.SetActive(true);
         }
     }
 

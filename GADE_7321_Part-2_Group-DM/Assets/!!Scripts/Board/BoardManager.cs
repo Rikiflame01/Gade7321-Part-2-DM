@@ -31,7 +31,7 @@ public class BoardManager : MonoBehaviour
 
     private void Awake()
     {
-        gameStateData.currentBoard = 1;
+        gameStateData.currentBoard = 0;
         gameStateData.numBluePieces = 0;
         gameStateData.numBluePieces = 0;
         InitialiseBoards();
@@ -77,40 +77,40 @@ public class BoardManager : MonoBehaviour
     {
         switch (gameStateData.currentBoard)
         {
-            case 1:
-                
+            case 0:
+                ShowBoard(boardOne);
                 boardOne[x, y] = piece;
                 PlaceEdgePiece(boardFive, boardSix, boardFour, boardTwo,
                     x,y, piece);
                 OnPiecePlaced?.Invoke(boardOne, x, y, _playerTurn.ToString());
                 ShowBoard(boardFive);
                 break;
-            case 2:
+            case 1:
                 boardTwo[x, y] = piece;
                 PlaceEdgePiece(boardFive, boardSix, boardOne, boardThree,
                     x,y, piece);
                 OnPiecePlaced?.Invoke(boardTwo, x, y, _playerTurn.ToString());
                 break;
-            case 3:
+            case 2:
                 boardThree[x, y] = piece;
                 PlaceEdgePiece(boardFive, boardSix, boardTwo, boardFour,
                     x,y, piece);
                 OnPiecePlaced?.Invoke(boardThree, x, y, _playerTurn.ToString());
                 break;
-            case 4:
+            case 3:
                 boardFour[x, y] = piece;
                 PlaceEdgePiece(boardFive, boardSix, boardThree, boardOne,
                     x,y, piece);
                 OnPiecePlaced?.Invoke(boardFour, x, y, _playerTurn.ToString());
                 break;
-            case 5:
+            case 4:
                 boardFive[x, y] = piece;
                 PlaceEdgePiece(boardOne, boardThree, boardTwo, boardFour,
                     x,y, piece);
                 OnPiecePlaced?.Invoke(boardFive, x, y, _playerTurn.ToString());
                 ShowBoard(boardFive);
                 break;
-            case 6:
+            case 5:
                 boardSix[x, y] = piece;
                 PlaceEdgePiece(boardOne, boardThree, boardTwo, boardFour,
                     x,y, piece);

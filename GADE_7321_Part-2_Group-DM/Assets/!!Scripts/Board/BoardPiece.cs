@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace __Scripts.Board
 {
     public class BoardPiece : MonoBehaviour
     {
+        public int face = 10;
         [SerializeField] private bool isOccupied;
         [field: SerializeField] public Vector3 Coordinates { get; set; }
         [field: SerializeField] public GameObject spherePiece;
@@ -32,6 +34,7 @@ namespace __Scripts.Board
         {
             isOccupied = true;
             spherePiece = piece;
+            _meshRenderer = piece.GetComponent<MeshRenderer>();
         }
 
         public bool IsPieceOccupied()
@@ -43,7 +46,7 @@ namespace __Scripts.Board
         {
             _material = blue ? blueMat : redMat;
             if (spherePiece == null) return;
-            StartCoroutine(ChangeColour(spherePiece.GetComponent<MeshRenderer>().material.color, _material.color));
+            StartCoroutine(ChangeColour(_meshRenderer.material.color, _material.color));
             
         }
 
@@ -56,11 +59,11 @@ namespace __Scripts.Board
             {
                 elapsedTime+= Time.deltaTime;
                 float progress = elapsedTime / duration;
-                spherePiece.GetComponent<MeshRenderer>().material.color = Color.Lerp(from, to, progress);
+                _meshRenderer.material.color = Color.Lerp(from, to, progress);
                 yield return null;
             }
 
-            spherePiece.GetComponent<MeshRenderer>().material.color = to;
+            _meshRenderer.material.color = to;
         }
     }
 }

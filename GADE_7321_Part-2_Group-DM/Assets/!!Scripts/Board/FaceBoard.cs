@@ -13,7 +13,7 @@ public class FaceBoard : MonoBehaviour
     
     [SerializeField] private LayerMask layerMask;
 
-    public void PopulateData()
+    public void PopulateData(GameStateData gameStateData)
     {
         RaycastHit hit;
 
@@ -22,9 +22,9 @@ public class FaceBoard : MonoBehaviour
             Debug.DrawRay(transform.position, transform.right * 2f, Color.red);
             if (hit.transform.TryGetComponent<BoardPiece>(out BoardPiece piece))
             {
+                piece.face = gameStateData.currentBoard;
                 SpawnPosition = hit.transform;
                 BoardPiece = piece;
-                Debug.Log($"Combined board piece: {piece.Coordinates}");
             }
         }
         

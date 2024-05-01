@@ -55,14 +55,12 @@ public class PlayerMouseController : MonoBehaviour
         {
             if (hit.transform.TryGetComponent<FaceBoard>(out FaceBoard piece))
             {
-                piece.PopulateData();
-                OnBoardPieceClicked?.Invoke(piece.SpawnPosition.position,piece.BoardPiece,piece.Coordinates);
+                piece.PopulateData(gameStateData);
+                piece.BoardPiece.Coordinates = piece.Coordinates;
+                OnBoardPieceClicked?.Invoke(piece.SpawnPosition.position, piece.BoardPiece, piece.Coordinates);
                 Debug.Log($"Hit object {hit.transform.name} | transform: {hit.transform.position}");
             }
         }
-
-        
-
     }
 
     // Update is called once per frame

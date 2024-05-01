@@ -85,7 +85,7 @@ public class PieceCaptureHandler : MonoBehaviour
                     board[nx, ny] = currentPlayerColor;  // Capture the piece
                     data.UpdatePieces(currentPlayerColor, 1);
                     data.UpdatePieces(data.GetOppositeColour(currentPlayerColor), -1);
-                    Debug.Log($"Piece Captured at {x} and {y} piece: {currentPlayerColor}");
+                    Debug.Log($"Piece Captured at {nx} and {ny} piece: {currentPlayerColor}");
                     ChangePieceVisual(nx, ny, currentPlayerColor == "Blue");
                 }
                 
@@ -117,7 +117,8 @@ public class PieceCaptureHandler : MonoBehaviour
 
             debugBoard += "\n";
         }
-        
+
+        debugBoard += $" board: {data.currentBoard}";
         Debug.Log(debugBoard);
     }
 
@@ -125,8 +126,9 @@ public class PieceCaptureHandler : MonoBehaviour
     {
         foreach (var piece in pieces)
         {
-            if (piece.Coordinates.x == x && piece.Coordinates.y == y)
+            if (piece.Coordinates.x == x && piece.Coordinates.y == y && piece.face == data.currentBoard)
             {
+                Debug.Log($"Changing piece colour, piece {piece.Coordinates} and face: {piece.face}");
                 piece.ChangePieceColour(isBlue);
             }
         }
