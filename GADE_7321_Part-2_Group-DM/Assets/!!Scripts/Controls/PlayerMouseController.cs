@@ -15,7 +15,7 @@ public class PlayerMouseController : MonoBehaviour
     private DefaultInputActions _playerInput;
     private Camera _mainCam;
 
-    public UnityEvent<Vector3, BoardPiece> OnBoardPieceClicked;
+    public UnityEvent<Vector3, BoardPiece, Vector3> OnBoardPieceClicked;
 
     private void Awake()
     {
@@ -53,9 +53,10 @@ public class PlayerMouseController : MonoBehaviour
 
         if (Physics.Raycast(mousePos, out hit, 100f, _boardPiece))
         {
-            if (hit.transform.TryGetComponent<BoardPiece>(out BoardPiece piece))
+            if (hit.transform.TryGetComponent<FaceBoard>(out FaceBoard piece))
             {
-                OnBoardPieceClicked?.Invoke(hit.transform.position, piece);
+                piece.PopulateData();
+                OnBoardPieceClicked?.Invoke(piece.SpawnPosition.position,piece.BoardPiece,piece.Coordinates);
                 Debug.Log($"Hit object {hit.transform.name} | transform: {hit.transform.position}");
             }
         }

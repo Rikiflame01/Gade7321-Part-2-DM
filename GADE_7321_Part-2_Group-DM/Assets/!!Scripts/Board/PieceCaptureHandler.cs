@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using __Scripts;
 using __Scripts.Board;
 using UnityEngine;
 
 public class PieceCaptureHandler : MonoBehaviour
 {
     [SerializeField] private List<BoardPiece> pieces;
+    [SerializeField] private GameStateData data;
     
     // Directions vectors for diagonals: northeast, northwest, southeast, southwest
     int[,] _directions = new int[,] { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
@@ -23,7 +25,6 @@ public class PieceCaptureHandler : MonoBehaviour
 
     public void CheckIfPieceCaptured(string[,] board, int x, int y, string currentPlayerColor)
     {
-        
         int size = board.GetLength(0); // Assuming the board is square
         string oppositeColour = currentPlayerColor == "Blue" ? "Red" : "Blue";
         
@@ -47,6 +48,8 @@ public class PieceCaptureHandler : MonoBehaviour
                 {
                     Debug.Log("***New Capture:***");
                     board[x, y] = oppositeColour;  // Capture the piece
+                    data.UpdatePieces(oppositeColour, 1);
+                    data.UpdatePieces(data.GetOppositeColour(currentPlayerColor), -1);
                     ChangePieceVisual(x, y, oppositeColour == "Blue");
                 }
                 
@@ -80,6 +83,8 @@ public class PieceCaptureHandler : MonoBehaviour
                 if (board[nx, ny] != currentPlayerColor && board[nx, ny] != "_" && board[nnx, nny] == currentPlayerColor)
                 {
                     board[nx, ny] = currentPlayerColor;  // Capture the piece
+                    data.UpdatePieces(currentPlayerColor, 1);
+                    data.UpdatePieces(data.GetOppositeColour(currentPlayerColor), -1);
                     Debug.Log($"Piece Captured at {x} and {y} piece: {currentPlayerColor}");
                     ChangePieceVisual(nx, ny, currentPlayerColor == "Blue");
                 }

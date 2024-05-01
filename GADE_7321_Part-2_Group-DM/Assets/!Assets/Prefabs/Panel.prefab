@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3605726341595829858}
   - component: {fileID: 9053455467182003677}
   - component: {fileID: 6139387220053087588}
-  - component: {fileID: -4816458818927855116}
+  - component: {fileID: -8782415920901342836}
   m_Layer: 0
   m_Name: Panel
   m_TagString: Untagged
@@ -106,7 +106,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-4816458818927855116
+--- !u!114 &-8782415920901342836
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,12 +115,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2188951327082932196}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0fa113ca2f04afabd995cec76ee98a4, type: 3}
+  m_Script: {fileID: 11500000, guid: e7bef6bd7c2accb40970d4549cf34a82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOccupied: 0
-  <Coordinates>k__BackingField: {x: 0, y: 0, z: 0}
-  spherePiece: {fileID: 3262811514825071465, guid: 23dd7755d14d4eb41bd4a31d02d5ecf9,
-    type: 3}
-  redMat: {fileID: 2100000, guid: f9c44c7d9ed534342a3d8f3e23cb2801, type: 2}
-  blueMat: {fileID: 2100000, guid: 3f2d2baa945d2544dacd4b46a15b171f, type: 2}
+  Coordinates: {x: 0, y: 0, z: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 8

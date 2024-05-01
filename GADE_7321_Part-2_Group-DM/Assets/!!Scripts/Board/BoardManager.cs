@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using __Scripts.Board;
+using __Scripts;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -41,7 +42,7 @@ public class BoardManager : MonoBehaviour
         _playerTurn = gameStateData.playerTurn;
     }
 
-    public void TryPlacePiece(Vector3 position, BoardPiece boardPiece)
+    public void TryPlacePiece(Vector3 position, BoardPiece boardPiece, Vector3 coordinates)
     {
         if (boardPiece.IsPieceOccupied() || isGameEnd)
         {
@@ -49,11 +50,14 @@ public class BoardManager : MonoBehaviour
             return;
         }
         
-        Debug.Log("Piece is not occupied");
         boardPiece.PlacePiece(_pieceSpawner.SpawnSphere(position, _playerTurn));
-        PlacePieceOnBoard((int)boardPiece.Coordinates.x, (int)boardPiece.Coordinates.y, _playerTurn.ToString());
+        PlacePieceOnBoard((int)coordinates.x, (int)coordinates.y, _playerTurn.ToString());
+        
+        gameStateData.UpdatePieces(_playerTurn.ToString(), 1);
+        
         ChangePlayerTurn();
         _numPiecesOnBoard++;
+        
         if (_numPiecesOnBoard >= gameEndAmount)
         {
             isGameEnd = true;
@@ -63,7 +67,11 @@ public class BoardManager : MonoBehaviour
         
     }
 
-    void ChangePlayerTurn() { _playerTurn = _playerTurn == Player.Blue ? Player.Red : Player.Blue; }
+    void ChangePlayerTurn()
+    {
+        _playerTurn = _playerTurn == Player.Blue ? Player.Red : Player.Blue;
+        gameStateData.playerTurn = _playerTurn;
+    }
 
     void PlacePieceOnBoard(int x, int y, string piece)
     {
