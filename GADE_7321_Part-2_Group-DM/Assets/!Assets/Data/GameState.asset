@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: GameState
   m_EditorClassIdentifier: 
   playerTurn: 0
-  numRedPieces: 0
-  numBluePieces: 0
+  numRedPieces: 50
+  numBluePieces: 59
+  currentBoard: 0
