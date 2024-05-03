@@ -17,17 +17,15 @@ namespace __Scripts.Board
         private MeshRenderer _meshRenderer;
         private Material _material;
 
-        public static event Action<BoardPiece> OnPieceSpawn;
-
         private void Start()
         {
+            //Get mesh renderer to change colour
             _meshRenderer = GetComponent<MeshRenderer>();
             _material = blueMat;
         }
 
         private void OnEnable()
         {
-            OnPieceSpawn?.Invoke(this);
         }
 
         public void PlacePiece(GameObject piece)
@@ -37,12 +35,12 @@ namespace __Scripts.Board
             _meshRenderer = piece.GetComponent<MeshRenderer>();
         }
 
-        public bool IsPieceOccupied()
+        public bool IsPieceOccupied() //Check for placing spheres
         {
             return isOccupied;
         }
 
-        public void ChangePieceColour(bool blue)
+        public void ChangePieceColour(bool blue) //Called to change colour
         {
             _material = blue ? blueMat : redMat;
             if (spherePiece == null) return;
@@ -50,7 +48,7 @@ namespace __Scripts.Board
             
         }
 
-        IEnumerator ChangeColour(Color from, Color to)
+        IEnumerator ChangeColour(Color from, Color to) //Coroutine for changing colour from blue to red or vice versa
         {
             float duration = 1f;
             float elapsedTime = 0f;

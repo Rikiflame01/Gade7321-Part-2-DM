@@ -2,7 +2,8 @@ namespace __Scripts
 {
     public static class Utils
     {
-        public static bool IsTurn(this GameStateData gameData, string player)
+        //Extension methods for general utility more of a learning than utility;
+        public static bool IsTurn(this GameStateData gameData, string player) 
         {
             return gameData.playerTurn.ToString() == player;
         }

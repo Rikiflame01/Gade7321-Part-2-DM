@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
@@ -17,6 +18,23 @@ public class BoardTracker : MonoBehaviour
     private void Start()
     {
         previousBoardFace = boardFaces[0];
+
+        for (int i = 0; i < boardFaces.Length; i++) //Show faces
+        {
+            boardFaces[i].SetActive(true);
+        }
+
+        StartCoroutine(ShowFrontBoardOnly());
+    }
+
+    IEnumerator ShowFrontBoardOnly()
+    {
+        yield return new WaitForSeconds(1f);
+        for (int i = 0; i < boardFaces.Length; i++)
+        {
+            if(i == 0) continue;
+            boardFaces[i].SetActive(false);
+        }
     }
 
     void Update()
@@ -26,13 +44,14 @@ public class BoardTracker : MonoBehaviour
 
     void FindClosestEmpty()
     {
+        //Set camera positions to closest
         float closestDistance = Mathf.Infinity;
         GameObject closestEmpty = null;
         int closestIndex = -1;
 
         for (int i = 0; i < empties.Length; i++)
         {
-            float distance = Vector3.Distance(transform.position, empties[i].transform.position);
+            float distance = Vector3.Distance(transform.position, empties[i].transform.position); //Get distance from different points
             if (distance < closestDistance)
             {
                 closestDistance = distance;
@@ -57,7 +76,7 @@ public class BoardTracker : MonoBehaviour
         if (gameStateData != null)
         {
             gameStateData.currentBoard = boardIndex;
-            UpdateBoardText(boardIndex);
+            UpdateBoardText(boardIndex); //Update game data container
             Debug.Log($"Current board updated to: {gameStateData.currentBoard}");
         }
         else

@@ -8,17 +8,20 @@ using UnityEngine.Events;
 
 public class BoardManager : MonoBehaviour
 {
+    //Getting all references and settings
     [Header("References")] 
     [SerializeField] private GameStateData gameStateData;
+    [SerializeField] private PlayerInfo playerInfo;
     [SerializeField] private int gameEndAmount = 120;
     [SerializeField] private PieceSpawner _pieceSpawner;
 
-    public int NumberOfPiecesPlayed => _numPiecesOnBoard;
+    public int NumberOfPiecesPlayed => _numPiecesOnBoard; 
 
     private int _numPiecesOnBoard;
     private bool isGameEnd;
     private Player _playerTurn;
     
+    //All boards separated for minimax, minimxa will be calculated on board being played
     private string[,] boardOne = new string[5, 5]; //Front Face on start
     private string[,] boardTwo = new string[5, 5]; //Too the right of one
     private string[,] boardThree = new string[5, 5]; //Opposite of one
@@ -27,13 +30,16 @@ public class BoardManager : MonoBehaviour
     private string[,] boardSix = new string[5, 5]; //Bottom of one
 
     public UnityEvent<string[,], int, int, string> OnPiecePlaced;
+    public UnityEvent<int> PiecePlaced;
     public UnityEvent OnEndGame;
 
     private void Awake()
     {
+        //setup
+        gameStateData.playerTurn = Player.Blue;
         gameStateData.currentBoard = 0;
         gameStateData.numBluePieces = 0;
-        gameStateData.numBluePieces = 0;
+        gameStateData.numRedPieces = 0;
         InitialiseBoards();
     }
 
@@ -42,7 +48,7 @@ public class BoardManager : MonoBehaviour
         _playerTurn = gameStateData.playerTurn;
     }
 
-    public void TryPlacePiece(Vector3 position, BoardPiece boardPiece, Vector3 coordinates)
+    public void TryPlacePiece(Vector3 position, BoardPiece boardPiece, Vector3 coordinates) //Subscription to unity event 
     {
         if (boardPiece.IsPieceOccupied() || isGameEnd)
         {
@@ -51,23 +57,22 @@ public class BoardManager : MonoBehaviour
         }
         
         boardPiece.PlacePiece(_pieceSpawner.SpawnSphere(position, _playerTurn));
-        PlacePieceOnBoard((int)coordinates.x, (int)coordinates.y, _playerTurn.ToString());
-        
+        PlacePieceOnBoard((int)coordinates.x, (int)coordinates.y, _playerTurn.ToString()); //place piece in 2D array
         gameStateData.UpdatePieces(_playerTurn.ToString(), 1);
+        _numPiecesOnBoard++;
+        PiecePlaced?.Invoke(gameEndAmount - _numPiecesOnBoard);
         
         ChangePlayerTurn();
-        _numPiecesOnBoard++;
         
-        if (_numPiecesOnBoard >= gameEndAmount)
+        if (_numPiecesOnBoard >= gameEndAmount) //Check for game end
         {
+            Debug.LogError("Game Ended");
             isGameEnd = true;
             OnEndGame?.Invoke();
         }
-        
-        
     }
 
-    void ChangePlayerTurn()
+    void ChangePlayerTurn() 
     {
         _playerTurn = _playerTurn == Player.Blue ? Player.Red : Player.Blue;
         gameStateData.playerTurn = _playerTurn;
@@ -75,52 +80,53 @@ public class BoardManager : MonoBehaviour
 
     void PlacePieceOnBoard(int x, int y, string piece)
     {
-        switch (gameStateData.currentBoard)
+        switch (gameStateData.currentBoard) //Get board to see which board array to update
         {
             case 0:
                 ShowBoard(boardOne);
                 boardOne[x, y] = piece;
                 PlaceEdgePiece(boardFive, boardSix, boardFour, boardTwo,
                     x,y, piece);
-                OnPiecePlaced?.Invoke(boardOne, x, y, _playerTurn.ToString());
+                OnPiecePlaced?.Invoke(boardOne, x, y, _playerTurn.ToString()); //Fire event for capture logic
                 ShowBoard(boardFive);
                 break;
             case 1:
                 boardTwo[x, y] = piece;
                 PlaceEdgePiece(boardFive, boardSix, boardOne, boardThree,
                     x,y, piece);
-                OnPiecePlaced?.Invoke(boardTwo, x, y, _playerTurn.ToString());
+                OnPiecePlaced?.Invoke(boardTwo, x, y, _playerTurn.ToString()); //Fire event for capture logic
                 break;
             case 2:
                 boardThree[x, y] = piece;
                 PlaceEdgePiece(boardFive, boardSix, boardTwo, boardFour,
                     x,y, piece);
-                OnPiecePlaced?.Invoke(boardThree, x, y, _playerTurn.ToString());
+                OnPiecePlaced?.Invoke(boardThree, x, y, _playerTurn.ToString()); //Fire event for capture logic
                 break;
             case 3:
                 boardFour[x, y] = piece;
                 PlaceEdgePiece(boardFive, boardSix, boardThree, boardOne,
                     x,y, piece);
-                OnPiecePlaced?.Invoke(boardFour, x, y, _playerTurn.ToString());
+                OnPiecePlaced?.Invoke(boardFour, x, y, _playerTurn.ToString()); //Fire event for capture logic
                 break;
             case 4:
                 boardFive[x, y] = piece;
                 PlaceEdgePiece(boardOne, boardThree, boardTwo, boardFour,
                     x,y, piece);
-                OnPiecePlaced?.Invoke(boardFive, x, y, _playerTurn.ToString());
+                OnPiecePlaced?.Invoke(boardFive, x, y, _playerTurn.ToString()); //Fire event for capture logic
                 ShowBoard(boardFive);
                 break;
             case 5:
                 boardSix[x, y] = piece;
                 PlaceEdgePiece(boardOne, boardThree, boardTwo, boardFour,
                     x,y, piece);
-                OnPiecePlaced?.Invoke(boardSix, x, y, _playerTurn.ToString());
+                OnPiecePlaced?.Invoke(boardSix, x, y, _playerTurn.ToString()); //Fire event for capture logic
                 break;
         }
     }
 
     void PlaceEdgePiece(string[,] boardAbove, string[,] boardBelow, string[,] boardLeft, string[,] boardRight, int row, int col, string piece)
     {
+        //Get edge pieces to update other 2D boards, as boards are connected 
         if (row == 0)
         {
             boardAbove[4, col] = piece;
@@ -177,7 +183,7 @@ public class BoardManager : MonoBehaviour
     
     #region  Board Setup
 
-    void InitialiseBoards()
+    void InitialiseBoards() //Setup boards
     {
         SetupBoard(boardOne);
         SetupBoard(boardTwo);
@@ -187,14 +193,19 @@ public class BoardManager : MonoBehaviour
         SetupBoard(boardSix);
     }
 
-    void SetupBoard(string[,] board)
+    void SetupBoard(string[,] board) //Make the spots empty
     {
         for (int i = 0; i < board.GetLength(0); i++)
         {
             for (int j = 0; j < board.GetLength(1); j++)
             {
                 board[i, j] = "_";
+                //if (i == 1 && j == 2) board[i, j] = "Red";
+                //if (i == 2 && j == 1) board[i, j] = "Red";
+                //if (i == 2 && j == 3) board[i, j] = "Blue";
+                //if (i == 3 && j == 2) board[i, j] = "Blue";
             }
+            
         }
     }
 

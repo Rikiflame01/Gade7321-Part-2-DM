@@ -35,8 +35,6 @@ public class PlayerMouseController : MonoBehaviour
         _playerInput.Player.Enable();
         
         _playerInput.Player.Fire.performed += OnMouseClick;
-
-        
     }
 
     private void OnDisable()
@@ -49,23 +47,18 @@ public class PlayerMouseController : MonoBehaviour
         Debug.Log("Mouse Click");
         RaycastHit hit;
 
-        Ray mousePos = _mainCam.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Ray mousePos = _mainCam.ScreenPointToRay(Mouse.current.position.ReadValue()); //Get mouse position in world when player clicks
 
-        if (Physics.Raycast(mousePos, out hit, 100f, _boardPiece))
+        if (Physics.Raycast(mousePos, out hit, 100f, _boardPiece)) //Fire a raycast to get the correct Face Board
         {
             if (hit.transform.TryGetComponent<FaceBoard>(out FaceBoard piece))
             {
-                piece.PopulateData(gameStateData);
+                //Set up FaceBoard and boardPiece
+                piece.PopulateData(gameStateData); 
                 piece.BoardPiece.Coordinates = piece.Coordinates;
                 OnBoardPieceClicked?.Invoke(piece.SpawnPosition.position, piece.BoardPiece, piece.Coordinates);
-                Debug.Log($"Hit object {hit.transform.name} | transform: {hit.transform.position}");
             }
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
