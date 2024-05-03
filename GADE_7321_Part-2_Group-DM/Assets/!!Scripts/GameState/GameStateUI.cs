@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameStateUI : MonoBehaviour
@@ -48,6 +49,16 @@ public class GameStateUI : MonoBehaviour
         redPiecesText.text = $"{gameStateData.numRedPieces}";
         InitializeTurnDisplay();
         colourIndicator.color = gameStateData.playerTurn != Player.Blue ?  Color.blue : Color.red;
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void ReturnHome()
+    {
+        SceneManager.LoadScene(0);
     }
     
 }

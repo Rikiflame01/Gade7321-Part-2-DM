@@ -52,7 +52,6 @@ public class BoardManager : MonoBehaviour
     {
         if (boardPiece.IsPieceOccupied() || isGameEnd)
         {
-            Debug.LogError("Piece is occupied, OR game has ended");
             return;
         }
         
@@ -66,7 +65,6 @@ public class BoardManager : MonoBehaviour
         
         if (_numPiecesOnBoard >= gameEndAmount) //Check for game end
         {
-            Debug.LogError("Game Ended");
             isGameEnd = true;
             OnEndGame?.Invoke();
         }
