@@ -2,6 +2,19 @@ using UnityEngine;
 
 public class NewPlayerCameraController : MonoBehaviour
 {
+
+    /*
+     * The NewPlayerCameraController script in Unity controls camera movement around a target point on a grid. 
+     * It adjusts the camera's position based on mouse inputs, maintaining a set distance from the target. 
+     * The script provides functionality to lock or unlock the cursor when the right mouse button is pressed, 
+     * which also resets the camera view to its nearest 90-degree orientation. Camera angles are clamped to prevent 
+     * over-rotation. Additional methods allow for manual vertical 
+     * or horizontal rotation of the camera in specified increments. 
+     * The camera initializes its position looking directly at the grid center.
+     */
+
+
+
     public GridManager gridManager;
     public float sensitivity = 300f;
     public float distanceFromTarget = 15f;

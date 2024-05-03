@@ -3,6 +3,15 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
+/*
+ * 
+The PlayerInputManager script in Unity captures player names through input fields, 
+assigns colors randomly to each player, and changes scenes upon successful submission. 
+It handles button click events to submit names and color assignments. If a player name 
+is missing, it logs a reminder; otherwise, it loads the specified scene. 
+The script also manages event listeners for the submit button.
+ */
+
 public class PlayerInputManager : MonoBehaviour
 {
     public PlayerInfo playerInfo;

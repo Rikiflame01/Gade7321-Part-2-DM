@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class HoverEffect : MonoBehaviour
 {
+    //this script is used to change the color of a piece when the mouse hovers over it
+
     public GameStateData gameStateData; 
     private Renderer renderer;
     private Color originalColor;
