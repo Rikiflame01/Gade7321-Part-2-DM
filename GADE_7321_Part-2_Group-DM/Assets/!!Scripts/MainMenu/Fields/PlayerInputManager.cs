@@ -15,6 +15,9 @@ The script also manages event listeners for the submit button.
 public class PlayerInputManager : MonoBehaviour
 {
     public PlayerInfo playerInfo;
+    public GameObject gameCanvas;
+    public GameObject Input;
+    public GameStateUI ui;
 
     public TMP_InputField player1InputField;
     public TMP_InputField player2InputField;
@@ -53,8 +56,10 @@ public class PlayerInputManager : MonoBehaviour
         }
         else
         {
+            ui.UpdateUI();
+            Input.SetActive(true);
+            gameCanvas.SetActive(false);
             
-            SceneManager.LoadScene("SampleScene");
         }
     }
 
