@@ -12,7 +12,10 @@ public class PieceCaptureHandler : MonoBehaviour
     [SerializeField] private GameStateData data;
     
     // Directions vectors for diagonals: northeast, northwest, southeast, southwest
-    int[,] _directions = new int[,] { {1, 1}, {1, -1}, {-1, 1}, {-1, -1} };
+    private int[,] _directions = new int[,]
+    {
+        { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 }
+    };
     private string[,] test = new string[5, 5];
 
     private List<Vector2> emptyList = new List<Vector2>();
@@ -43,189 +46,77 @@ public class PieceCaptureHandler : MonoBehaviour
     {
         int size = board.GetLength(0);
 
-        List<Vector2> diagonalsOfCurrentMove = new List<Vector2>();
-        
         for (int i = 0; i < 4; i++)
         {
             int dx = _directions[i, 0];
             int dy = _directions[i, 1];
-            
-            for (int j = 0; j < 5; j++)
-            {
-                // Check the first diagonal position
-                int x1 = x + dx * j;
-                int y1 = y + dy * j;
 
-                // Check the second diagonal position
-                int x2 = x + -1 * (dx * j);
-                int y2 = y + -1 * (dy * j);
-                
-                //if (!IsInBounds(x1, y1, 5) || !IsInBounds(x2, y2, 5)) continue;
-                if (IsInBounds(x1, y1, 5))
+            // Check in both positive and negative directions
+            for (int direction = -1; direction <= 1; direction += 2)
+            {
+                List<Vector2> diagonalPositions = new List<Vector2>();
+                for (int j = 0; j < size; j++)
                 {
-                    Vector2 diagonal = new Vector2(x1, y1);
+                    int newX = x + direction * dx * j;
+                    int newY = y + direction * dy * j;
 
-                    if (!diagonalsOfCurrentMove.Contains(diagonal))
-                    {
-                        diagonalsOfCurrentMove.Add(diagonal);
-                    }
-                    
+                    if (!IsInBounds(newX, newY, size))
+                        break;
+
+                    diagonalPositions.Add(new Vector2(newX, newY));
                 }
-
-                if (IsInBounds(x2, y2, 5))
-                {
-                    Vector2 diagonal = new Vector2(x2, y2);
-
-                    if (!diagonalsOfCurrentMove.Contains(diagonal))
-                    {
-                        diagonalsOfCurrentMove.Add(diagonal);
-                    }
-                }
-            }
-
-            //Sorting diagonal by x and y - if x of Vector a is equal to x of vector b then check if y less
-            diagonalsOfCurrentMove.Sort((a, b) =>
-            {
-                if (a.x == b.x)
-                    return a.y.CompareTo(b.y);
-                return a.x.CompareTo(b.x);
-            });
-            
-            CheckDiagonals(diagonalsOfCurrentMove, board);
-            diagonalsOfCurrentMove.Clear();
-            diagonalsOfCurrentMove = emptyList;
-        }
-
-        ShowBoard(board);
-    }
-
-    private void MiniPatch(string[,] board)
-    {
-        if (board[3, 3] != "_")
-        {
-            if (board[2, 2] == board[4, 4] && board[2, 2] != "_")
-            {
-                board[3, 3] = board[2, 2];
-                ChangePieceVisual(3,3, board[3,3] == "Blue");
-            }
-        }
-    }
-    
-    private void MiniPatch2(string[,] board)
-    {
-        if (board[3, 1] != "_")
-        {
-            if (board[2, 2] == board[4, 0] && board[2, 2] != "_")
-            {
-                board[3, 1] = board[2, 2];
-                ChangePieceVisual(3,1, board[3,1] == "Blue");
+                CheckDiagonals(diagonalPositions, board, currentPlayerColor);
             }
         }
     }
 
-    private void CheckDiagonals(List<Vector2> diagonalsOfCurrentMove, string[,] board)
+    private void CheckDiagonals(List<Vector2> diagonalPositions, string[,] board, string currentPlayerColor)
     {
-        //This method checks the diagonals for potential captures
-        
-        //List<string> colours = new List<string>();
-        for (int i = 0; i < diagonalsOfCurrentMove.Count; i++)
+        int size = diagonalPositions.Count;
+
+        // Debug output for diagonals
+        Debug.Log("Diagonal Positions:");
+        foreach (var pos in diagonalPositions)
         {
-            int x1 =(int) diagonalsOfCurrentMove[i].x;
-            int y1 = (int)diagonalsOfCurrentMove[i].y;
-            
-            string currentColour = board[x1, y1];
-            
-            int count = 0;
-            List<Vector2> colours = new List<Vector2>();
-            string firstColour = "";
-            
-            if (currentColour != "_")
+            Debug.Log($"({pos.x}, {pos.y}) - {board[(int)pos.x, (int)pos.y]}");
+        }
+
+        for (int i = 0; i < size - 2; i++)
+        {
+            string firstPieceColor = board[(int)diagonalPositions[i].x, (int)diagonalPositions[i].y];
+            if (firstPieceColor == "_" || firstPieceColor != currentPlayerColor)
+                continue;
+
+            for (int j = i + 2; j < size; j++)
             {
-                count = 0;
-                for (int j = 1; j < diagonalsOfCurrentMove.Count; j++)
+                string lastPieceColor = board[(int)diagonalPositions[j].x, (int)diagonalPositions[j].y];
+                if (lastPieceColor != currentPlayerColor)
+                    continue;
+
+                bool validCapture = true;
+                List<Vector2> capturePositions = new List<Vector2>();
+
+                for (int k = i + 1; k < j; k++)
                 {
-                    if (i + j >= diagonalsOfCurrentMove.Count) return;
-                    
-                    int x2 = (int) diagonalsOfCurrentMove[i+j].x;
-                    int y2 = (int) diagonalsOfCurrentMove[i+j].y;
-                    string nextColour = board[x2, y2];
-                    
-                    if (j == 0) firstColour = nextColour;
-                    if (nextColour != "_" /*&& nextColour != firstColour*/)
+                    string middlePieceColor = board[(int)diagonalPositions[k].x, (int)diagonalPositions[k].y];
+                    if (middlePieceColor == "_" || middlePieceColor == currentPlayerColor)
                     {
-                        count++;
-                        colours.Add(new Vector2(x2,y2));
-                        if (count == 2) //If 3 pieces check capture
-                        {
-                            int difference = Mathf.Abs(x1 - x2);
-                            if (difference > 2) return;
-                            string test = board[(int)colours[0].x, (int)colours[0].y];
-                            if (currentColour == nextColour && currentColour != board[(int)colours[0].x, (int)colours[0].y] && test != "_" ) //condition
-                            {
-                                //Change board array
-                                board[(int)colours[0].x, (int)colours[0].y] = currentColour;
-                                //Change board visual
-                                ChangePieceVisual((int)colours[0].x, (int)colours[0].y, currentColour == "Blue");
-                                //Change Data
-                                data.UpdatePieces(currentColour, 1);
-                                data.UpdatePieces(data.GetOppositeColour(currentColour), -1);
-                                colours.Clear();
-                                return;
-                            }
-                        }
+                        validCapture = false;
+                        break;
+                    }
+                    capturePositions.Add(diagonalPositions[k]);
+                }
 
-                        if (count == 3) //if four pieces check capture of two pieces
-                        {
-                            
-                            if (colours.Count < 2) return;
-                            if (currentColour == nextColour && 
-                                currentColour != board[(int)colours[0].x, (int)colours[0].y] &&
-                                currentColour != board[(int)colours[1].x, (int)colours[1].y])
-                            {
-                                //Change board array
-                                board[(int)colours[0].x, (int)colours[0].y] = currentColour;
-                                board[(int)colours[1].x, (int)colours[1].y] = currentColour;
-                                //Change board visual
-                                ChangePieceVisual((int)colours[0].x, (int)colours[0].y, currentColour == "Blue");
-                                ChangePieceVisual((int)colours[1].x, (int)colours[1].y, currentColour == "Blue");
-                                //Change Data
-                                data.UpdatePieces(currentColour, 2);
-                                data.UpdatePieces(data.GetOppositeColour(currentColour), -2);
-                                colours.Clear();
-                                return;
-                            }
-                        }
-
-                        if (count == 4) //if 5 pieces check capture of 3 pieces
-                        {
-                            if (colours.Count < 3) return;
-                            if (currentColour == nextColour && 
-                                currentColour != board[(int)colours[0].x, (int)colours[0].y] &&
-                                currentColour != board[(int)colours[1].x, (int)colours[1].y] &&
-                                currentColour != board[(int)colours[2].x, (int)colours[2].y])
-                            {
-                                //Change board array
-                                board[(int)colours[0].x, (int)colours[0].y] = currentColour;
-                                board[(int)colours[1].x, (int)colours[1].y] = currentColour;
-                                board[(int)colours[2].x, (int)colours[2].y] = currentColour;
-                                //Change board visual
-                                ChangePieceVisual((int)colours[0].x, (int)colours[0].y, currentColour == "Blue");
-                                ChangePieceVisual((int)colours[1].x, (int)colours[1].y, currentColour == "Blue");
-                                ChangePieceVisual((int)colours[2].x, (int)colours[2].y, currentColour == "Blue");
-                                //Change Data
-                                data.UpdatePieces(currentColour, 3);
-                                data.UpdatePieces(data.GetOppositeColour(currentColour), -3);
-                                colours.Clear();
-                                return;
-                            }
-                        }
+                if (validCapture)
+                {
+                    foreach (var pos in capturePositions)
+                    {
+                        board[(int)pos.x, (int)pos.y] = currentPlayerColor;
+                        ChangePieceVisual((int)pos.x, (int)pos.y, currentPlayerColor == "Blue");
                     }
                 }
             }
-            colours.Clear();
         }
-        MiniPatch(board); //Fix up some diagonal capture logic
-        MiniPatch2(board);
     }
 
     string  GetOppositeColour(string colour) //Utility method
@@ -237,7 +128,7 @@ public class PieceCaptureHandler : MonoBehaviour
 
     private bool IsInBounds(int x, int y, int size) //Check for in bounds
     {
-        return (x >= 0 && y >= 0) && (x < size && y < size);
+        return x >= 0 && y >= 0 && x < size && y < size;
     }
 
     public void PopulatePieces(FaceBoard piece) //Get all FaceBoards

@@ -22,7 +22,7 @@ public class GameStateUI : MonoBehaviour
     
     void Awake()
     {
-        InitializeTurnDisplay();
+        //InitializeTurnDisplay();
         
     }
 
@@ -31,7 +31,7 @@ public class GameStateUI : MonoBehaviour
         if (playerInfo.player1.playerName != null)
         {
             // Blue always goes first, so check which player is Blue
-            firstPlayerName = (playerInfo.player1.playerColour != gameStateData.playerTurn.ToString()) ? playerInfo.player1.playerName : playerInfo.player2.playerName;
+            firstPlayerName = (playerInfo.player1.playerColour == gameStateData.playerTurn.ToString()) ? playerInfo.player1.playerName : playerInfo.player2.playerName;
             turnText.text = $"{firstPlayerName}";   
         }
         else
@@ -47,8 +47,15 @@ public class GameStateUI : MonoBehaviour
         piecesLeftText.text = $"{numPiecesLeft.ToString()}";
         bluePiecesText.text = $"{gameStateData.numBluePieces}";
         redPiecesText.text = $"{gameStateData.numRedPieces}";
-        InitializeTurnDisplay();
+        turnText.text = turnText.text == playerInfo.player1.playerName
+            ? playerInfo.player2.playerName
+            : playerInfo.player1.playerName;
         colourIndicator.color = gameStateData.playerTurn != Player.Blue ?  Color.blue : Color.red;
+    }
+
+    public void UpdateUI()
+    {
+        InitializeTurnDisplay();
     }
 
     public void QuitGame()
