@@ -42,7 +42,17 @@ public class PieceCaptureHandler : MonoBehaviour
         FaceBoard.OnPieceSpawn -= PopulatePieces;
     }
 
-    public void GetDiagonals(string[,] board, int x, int y, string currentPlayerColor)
+    public void CheckDiagonalTake(BoardMove boardMove)
+    {
+        string[,] board = boardMove.board;
+        int x = boardMove.x;
+        int y = boardMove.y;
+        string currentPlayerColour = boardMove.playerTurn;
+        
+        GetDiagonals(board, x, y, currentPlayerColour);
+    }
+
+    public void GetDiagonals(string[,] board, int x, int y, string currentPlayerColour)
     {
         int size = board.GetLength(0);
 
@@ -65,12 +75,12 @@ public class PieceCaptureHandler : MonoBehaviour
 
                     diagonalPositions.Add(new Vector2(newX, newY));
                 }
-                CheckDiagonals(diagonalPositions, board, currentPlayerColor);
+                CheckDiagonals(diagonalPositions, board, currentPlayerColour);
             }
         }
     }
 
-    private void CheckDiagonals(List<Vector2> diagonalPositions, string[,] board, string currentPlayerColor)
+    private void CheckDiagonals(List<Vector2> diagonalPositions, string[,] board, string currentPlayerColour)
     {
         int size = diagonalPositions.Count;
 
@@ -84,13 +94,13 @@ public class PieceCaptureHandler : MonoBehaviour
         for (int i = 0; i < size - 2; i++)
         {
             string firstPieceColor = board[(int)diagonalPositions[i].x, (int)diagonalPositions[i].y];
-            if (firstPieceColor == "_" || firstPieceColor != currentPlayerColor)
+            if (firstPieceColor == "_" || firstPieceColor != currentPlayerColour)
                 continue;
 
             for (int j = i + 2; j < size; j++)
             {
                 string lastPieceColor = board[(int)diagonalPositions[j].x, (int)diagonalPositions[j].y];
-                if (lastPieceColor != currentPlayerColor)
+                if (lastPieceColor != currentPlayerColour)
                     continue;
 
                 bool validCapture = true;
@@ -99,7 +109,7 @@ public class PieceCaptureHandler : MonoBehaviour
                 for (int k = i + 1; k < j; k++)
                 {
                     string middlePieceColor = board[(int)diagonalPositions[k].x, (int)diagonalPositions[k].y];
-                    if (middlePieceColor == "_" || middlePieceColor == currentPlayerColor)
+                    if (middlePieceColor == "_" || middlePieceColor == currentPlayerColour)
                     {
                         validCapture = false;
                         break;
@@ -111,8 +121,8 @@ public class PieceCaptureHandler : MonoBehaviour
                 {
                     foreach (var pos in capturePositions)
                     {
-                        board[(int)pos.x, (int)pos.y] = currentPlayerColor;
-                        ChangePieceVisual((int)pos.x, (int)pos.y, currentPlayerColor == "Blue");
+                        board[(int)pos.x, (int)pos.y] = currentPlayerColour;
+                        ChangePieceVisual((int)pos.x, (int)pos.y, currentPlayerColour == "Blue");
                     }
                 }
             }

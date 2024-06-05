@@ -94,10 +94,4 @@ public class FaceBoard : MonoBehaviour
             }
         }
     }
-
-    private void OnDrawGizmos() // For debugging in editor
-    {
-       Gizmos.color = Color.red;
-       Gizmos.DrawRay(transform.position, transform.right * 2f);
-    }
 }

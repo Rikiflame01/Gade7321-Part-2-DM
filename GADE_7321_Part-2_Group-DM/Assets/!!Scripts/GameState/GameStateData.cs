@@ -6,13 +6,23 @@ using UnityEngine;
 public class GameStateData : ScriptableObject
 {
     public Player playerTurn;
+    
     public int numRedPieces;
     public int numBluePieces;
     public int currentBoard;
+
+    public Difficulty difficulty;
 }
 
 public enum Player
 {
     Blue,
     Red
+}
+
+public enum Difficulty
+{
+    Easy,
+    Medium,
+    Hard,
 }

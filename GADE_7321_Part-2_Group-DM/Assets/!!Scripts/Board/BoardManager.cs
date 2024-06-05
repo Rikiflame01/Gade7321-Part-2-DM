@@ -15,8 +15,6 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private int gameEndAmount = 120;
     [SerializeField] private PieceSpawner _pieceSpawner;
 
-    public int NumberOfPiecesPlayed => _numPiecesOnBoard; 
-
     private int _numPiecesOnBoard;
     private bool isGameEnd;
     private Player _playerTurn;
@@ -29,7 +27,7 @@ public class BoardManager : MonoBehaviour
     private string[,] boardFive = new string[5, 5]; // Top of one
     private string[,] boardSix = new string[5, 5]; //Bottom of one
 
-    public UnityEvent<string[,], int, int, string> OnPiecePlaced;
+    public UnityEvent<BoardMove> OnPiecePlaced;
     public UnityEvent<int> PiecePlaced;
     public UnityEvent OnEndGame;
 
@@ -78,6 +76,13 @@ public class BoardManager : MonoBehaviour
 
     void PlacePieceOnBoard(int x, int y, string piece)
     {
+        BoardMove move = new BoardMove
+        {
+            x = x,
+            y = y,
+            playerTurn = _playerTurn.ToString()
+        };
+
         switch (gameStateData.currentBoard) //Get board to see which board array to update
         {
             case 0:
@@ -85,39 +90,47 @@ public class BoardManager : MonoBehaviour
                 boardOne[x, y] = piece;
                 PlaceEdgePiece(boardFive, boardSix, boardFour, boardTwo,
                     x,y, piece);
-                OnPiecePlaced?.Invoke(boardOne, x, y, _playerTurn.ToString()); //Fire event for capture logic
+                move.board = boardOne;
+                OnPiecePlaced?.Invoke(move); //Fire event for capture logic
                 ShowBoard(boardFive);
                 break;
             case 1:
                 boardTwo[x, y] = piece;
                 PlaceEdgePiece(boardFive, boardSix, boardOne, boardThree,
                     x,y, piece);
-                OnPiecePlaced?.Invoke(boardTwo, x, y, _playerTurn.ToString()); //Fire event for capture logic
+                move.board = boardTwo;
+                OnPiecePlaced?.Invoke(move); //Fire event for capture logic
                 break;
             case 2:
                 boardThree[x, y] = piece;
                 PlaceEdgePiece(boardFive, boardSix, boardTwo, boardFour,
                     x,y, piece);
-                OnPiecePlaced?.Invoke(boardThree, x, y, _playerTurn.ToString()); //Fire event for capture logic
+                move.board = boardThree;
+                OnPiecePlaced?.Invoke(move); //Fire event for capture logic
                 break;
             case 3:
                 boardFour[x, y] = piece;
                 PlaceEdgePiece(boardFive, boardSix, boardThree, boardOne,
                     x,y, piece);
-                OnPiecePlaced?.Invoke(boardFour, x, y, _playerTurn.ToString()); //Fire event for capture logic
+                move.board = boardFour;
+                OnPiecePlaced?.Invoke(move);
+                //OnPiecePlaced?.Invoke(boardFour, x, y, _playerTurn.ToString()); //Fire event for capture logic
                 break;
             case 4:
                 boardFive[x, y] = piece;
                 PlaceEdgePiece(boardOne, boardThree, boardTwo, boardFour,
                     x,y, piece);
-                OnPiecePlaced?.Invoke(boardFive, x, y, _playerTurn.ToString()); //Fire event for capture logic
+                move.board = boardFive;
+                OnPiecePlaced?.Invoke(move);//Fire event for capture logic
                 ShowBoard(boardFive);
                 break;
             case 5:
                 boardSix[x, y] = piece;
                 PlaceEdgePiece(boardOne, boardThree, boardTwo, boardFour,
                     x,y, piece);
-                OnPiecePlaced?.Invoke(boardSix, x, y, _playerTurn.ToString()); //Fire event for capture logic
+                move.board = boardSix;
+                OnPiecePlaced?.Invoke(move);
+                //OnPiecePlaced?.Invoke(boardSix, x, y, _playerTurn.ToString()); //Fire event for capture logic
                 break;
         }
     }
@@ -198,10 +211,6 @@ public class BoardManager : MonoBehaviour
             for (int j = 0; j < board.GetLength(1); j++)
             {
                 board[i, j] = "_";
-                //if (i == 1 && j == 2) board[i, j] = "Red";
-                //if (i == 2 && j == 1) board[i, j] = "Red";
-                //if (i == 2 && j == 3) board[i, j] = "Blue";
-                //if (i == 3 && j == 2) board[i, j] = "Blue";
             }
             
         }
@@ -209,4 +218,13 @@ public class BoardManager : MonoBehaviour
 
     #endregion
     
+}
+
+public struct BoardMove
+{
+    public string[,] board;
+    public int x;
+    public int y;
+    public string playerTurn;
+
 }

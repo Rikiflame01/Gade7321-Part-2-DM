@@ -15,9 +15,7 @@ The script also manages event listeners for the submit button.
 public class PlayerInputManager : MonoBehaviour
 {
     public PlayerInfo playerInfo;
-    public GameObject gameCanvas;
-    public GameObject Input;
-    public GameStateUI ui;
+    public GameStateData gameData;
 
     public TMP_InputField player1InputField;
     public TMP_InputField player2InputField;
@@ -56,11 +54,46 @@ public class PlayerInputManager : MonoBehaviour
         }
         else
         {
-            ui.UpdateUI();
-            Input.SetActive(true);
-            gameCanvas.SetActive(false);
-            
+            SceneManager.LoadScene("MultiplayerScene");
         }
+    }
+
+    private void EnterPlayerInfoAI(string difficulty)
+    {
+        playerInfo.player1.playerName = "Player";
+        playerInfo.player2.playerName = difficulty + "AI";
+            
+        if (Random.value > 0.5f)
+        {
+            playerInfo.player1.playerColour = "Red";
+            playerInfo.player2.playerColour = "Blue";
+        }
+        else
+        {
+            playerInfo.player1.playerColour = "Blue";
+            playerInfo.player2.playerColour = "Red";
+        }
+    }
+
+    public void EnterEasy()
+    {
+        gameData.difficulty = Difficulty.Easy;
+        EnterPlayerInfoAI("Easy");
+        SceneManager.LoadScene("EasyScene");
+    }
+
+    public void EnterMedium()
+    {
+        gameData.difficulty = Difficulty.Medium;
+        EnterPlayerInfoAI("Medium");
+        SceneManager.LoadScene("MinimaxScene");
+    }
+
+    public void EnterDifficultScne()
+    {
+        gameData.difficulty = Difficulty.Hard;
+        EnterPlayerInfoAI("Hard");
+        SceneManager.LoadScene("MinimaxScene");
     }
 
     void OnDestroy()
