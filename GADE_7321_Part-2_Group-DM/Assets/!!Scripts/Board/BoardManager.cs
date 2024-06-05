@@ -96,7 +96,7 @@ public class BoardManager : MonoBehaviour
     
     private IEnumerator AIPlacePieceDelayed(BoardMove boardData)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         onAIMove?.Invoke(boardData);
         
