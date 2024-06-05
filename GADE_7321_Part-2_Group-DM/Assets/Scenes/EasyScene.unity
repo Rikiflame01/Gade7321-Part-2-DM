@@ -1848,6 +1848,36 @@ PrefabInstance:
       propertyPath: pieces.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7013647415187498439, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
+      propertyPath: onBoardPiecePlacedVAI.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7013647415187498439, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
+      propertyPath: onBoardPiecePlacedVAI.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1755300383}
+    - target: {fileID: 7013647415187498439, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
+      propertyPath: onBoardPiecePlacedVAI.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7013647415187498439, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
+      propertyPath: onBoardPiecePlacedVAI.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TryPlacePieceAI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7013647415187498439, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
+      propertyPath: onBoardPiecePlacedVAI.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BoardManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7013647415187498439, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
+      propertyPath: onBoardPiecePlacedVAI.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -2775,7 +2805,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1755300383}
         m_TargetAssemblyTypeName: BoardManager, Assembly-CSharp
-        m_MethodName: PlaceAIPieceOnBoard
+        m_MethodName: TryPlacePieceAI
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class AIEasyHandler : MonoBehaviour
 {
-    public UnityEvent<FaceBoard> onAIPlacePiece;
+    public UnityEvent<MoveData> onAIPlacePiece;
     
     [SerializeField] private PieceCaptureHandler captureHandler;
     
@@ -28,8 +28,7 @@ public class AIEasyHandler : MonoBehaviour
 
         if (captureMove != new Vector2(5, 5))
         {
-            FaceBoard faceBoard = captureHandler.GetPiece((int)captureMove.x, (int)captureMove.y);
-            onAIPlacePiece?.Invoke(faceBoard);
+            SubmitAIMove(captureMove);
             Debug.Log($"Capturing Piece at: {captureMove}");
             return;
         }
@@ -39,9 +38,21 @@ public class AIEasyHandler : MonoBehaviour
         Vector2 randomMove = possiblesMoves[Random.Range(0, possiblesMoves.Count)];
         
         Debug.Log($"Random Move at: {randomMove}, from {boardPiece.playerTurn}");
-        FaceBoard faceBoard1 = captureHandler.GetPiece((int)randomMove.x, (int)randomMove.y);
-        
-        onAIPlacePiece?.Invoke(faceBoard1);
+        SubmitAIMove(randomMove);
+    }
+
+    private void SubmitAIMove(Vector2 move)
+    {
+        FaceBoard faceBoard = captureHandler.GetPiece((int)move.x, (int)move.y);
+        MoveData boardData = new MoveData()
+        {
+            Position = faceBoard.GetBoardPiece().transform.position,
+            Piece = faceBoard.GetBoardPiece(),
+            Coordinate = faceBoard.Coordinates,
+            AITurn = false
+            
+        };
+        onAIPlacePiece?.Invoke(boardData);
     }
 
     private bool IsBoardFull(string[,] board)

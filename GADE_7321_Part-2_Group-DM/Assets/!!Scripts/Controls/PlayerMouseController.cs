@@ -16,6 +16,7 @@ public class PlayerMouseController : MonoBehaviour
     private Camera _mainCam;
 
     public UnityEvent<Vector3, BoardPiece, Vector3> OnBoardPieceClicked;
+    public UnityEvent<MoveData> onBoardPiecePlacedVAI;
 
     private void Awake()
     {
@@ -57,8 +58,22 @@ public class PlayerMouseController : MonoBehaviour
                 piece.PopulateData(gameStateData); 
                 piece.BoardPiece.Coordinates = piece.Coordinates;
                 OnBoardPieceClicked?.Invoke(piece.SpawnPosition.position, piece.BoardPiece, piece.Coordinates);
+                SubmitMoveAgainstAI(piece);
             }
         }
+    }
+
+    private void SubmitMoveAgainstAI(FaceBoard piece)
+    {
+        MoveData moveData = new MoveData()
+        {
+            Position = piece.SpawnPosition.position,
+            Piece = piece.BoardPiece,
+            Coordinate = piece.Coordinates,
+            AITurn = true
+        };
+        
+        onBoardPiecePlacedVAI?.Invoke(moveData);
     }
     
 }

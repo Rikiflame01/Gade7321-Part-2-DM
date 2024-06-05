@@ -71,19 +71,36 @@ public class BoardManager : MonoBehaviour
         
         ChangePlayerTurn();
         
-        if(AIGameplay) _isAITurn = true;
-
-        if (_isAITurn && AIGameplay)
-        {
-            currentBoardMove.playerTurn = _playerTurn.ToString();
-            StartCoroutine(AIPlacePieceDelayed(currentBoardMove));
-        }
-        
         if (_numPiecesOnBoard >= gameEndAmount) //Check for game end
         {
             isGameEnd = true;
             OnEndGame?.Invoke();
         }
+    }
+    
+    public void TryPlacePieceAI(MoveData moveData) //Subscription to unity event 
+    {
+        if(!AIGameplay) return;
+
+        if (moveData.AITurn)
+        {
+
+            currentBoardMove.playerTurn = _playerTurn.ToString();
+            StartCoroutine(AIPlacePieceDelayed(currentBoardMove));
+        }
+        else
+        {
+            TryPlacePiece(moveData.Position, moveData.Piece, moveData.Coordinate);
+        }
+    }
+    
+    private IEnumerator AIPlacePieceDelayed(BoardMove boardData)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        onAIMove?.Invoke(boardData);
+        
+        if (AIGameplay) _isAITurn = false;
     }
 
     void ChangePlayerTurn() 
@@ -154,24 +171,6 @@ public class BoardManager : MonoBehaviour
 
         currentBoardMove = move;
         
-    }
-
-    private IEnumerator AIPlacePieceDelayed(BoardMove boardData)
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        onAIMove?.Invoke(boardData);
-        
-        if (AIGameplay) _isAITurn = false;
-    }
-
-    public void PlaceAIPieceOnBoard(FaceBoard faceBoard)
-    {
-        Vector3 pos = faceBoard.GetBoardPiece().transform.position;
-        BoardPiece boardPiece = faceBoard.GetBoardPiece();
-        Vector3 coordinates = faceBoard.Coordinates;
-        
-        TryPlacePiece(pos, boardPiece, coordinates);
     }
     
     void PlaceEdgePiece(string[,] boardAbove, string[,] boardBelow, string[,] boardLeft, string[,] boardRight, int row, int col, string piece)
@@ -265,5 +264,12 @@ public struct BoardMove
     public int x;
     public int y;
     public string playerTurn;
+}
 
+public struct MoveData
+{
+    public Vector3 Position;
+    public BoardPiece Piece;
+    public Vector3 Coordinate;
+    public bool AITurn;
 }
