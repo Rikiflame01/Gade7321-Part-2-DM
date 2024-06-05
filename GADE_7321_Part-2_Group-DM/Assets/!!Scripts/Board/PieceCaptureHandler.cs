@@ -12,7 +12,7 @@ public class PieceCaptureHandler : MonoBehaviour
     [SerializeField] private GameStateData data;
     
     // Directions vectors for diagonals: northeast, northwest, southeast, southwest
-    private int[,] _directions = new int[,]
+    public int[,] Directions = new int[,]
     {
         { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 }
     };
@@ -58,8 +58,8 @@ public class PieceCaptureHandler : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            int dx = _directions[i, 0];
-            int dy = _directions[i, 1];
+            int dx = Directions[i, 0];
+            int dy = Directions[i, 1];
 
             // Check in both positive and negative directions
             for (int direction = -1; direction <= 1; direction += 2)
@@ -80,7 +80,7 @@ public class PieceCaptureHandler : MonoBehaviour
         }
     }
 
-    private void CheckDiagonals(List<Vector2> diagonalPositions, string[,] board, string currentPlayerColour)
+    public bool CheckDiagonals(List<Vector2> diagonalPositions, string[,] board, string currentPlayerColour)
     {
         int size = diagonalPositions.Count;
 
@@ -124,9 +124,13 @@ public class PieceCaptureHandler : MonoBehaviour
                         board[(int)pos.x, (int)pos.y] = currentPlayerColour;
                         ChangePieceVisual((int)pos.x, (int)pos.y, currentPlayerColour == "Blue");
                     }
+
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     string  GetOppositeColour(string colour) //Utility method
@@ -136,7 +140,7 @@ public class PieceCaptureHandler : MonoBehaviour
     }
     
 
-    private bool IsInBounds(int x, int y, int size) //Check for in bounds
+    public bool IsInBounds(int x, int y, int size) //Check for in bounds
     {
         return x >= 0 && y >= 0 && x < size && y < size;
     }
@@ -163,15 +167,23 @@ public class PieceCaptureHandler : MonoBehaviour
         Debug.Log(debugBoard);
     }
 
-    private void ChangePieceVisual(int x, int y, bool isBlue) //changing visual of Board Piece
+    public FaceBoard GetPiece(int x, int y)
     {
         foreach (var piece in pieces)
         {
             if (piece.Coordinates.x == x && piece.Coordinates.y == y && piece.isActiveAndEnabled)
             {
                 //Debug.Log($"Changing piece colour, piece {piece.Coordinates} and face: {piece.face}");
-                piece.ChangePieceColour(isBlue);
+                return piece;
             }
         }
+
+        return null;
+    }
+
+    private void ChangePieceVisual(int x, int y, bool isBlue) //changing visual of Board Piece
+    {
+        GetPiece(x,y).ChangePieceColour(isBlue);
+        
     }
 }

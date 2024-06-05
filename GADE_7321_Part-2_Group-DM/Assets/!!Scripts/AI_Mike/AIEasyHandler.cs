@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using __Scripts.Board;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class AIEasyHandler : MonoBehaviour
 {
-    public UnityEvent<Vector2> onAIPlacePiece;
+    public UnityEvent<FaceBoard> onAIPlacePiece;
+    
+    [SerializeField] private PieceCaptureHandler captureHandler;
     
     public void PlacePiece(BoardMove boardPiece)
     {
         var board = boardPiece.board;
+        //FaceBoard faceBoard = null;
         
         Debug.Log("AI is placing piece");
         
@@ -20,15 +24,24 @@ public class AIEasyHandler : MonoBehaviour
             return;
         }
 
+        Vector2 captureMove = GetCaptureMove(board, boardPiece.playerTurn);
+
+        if (captureMove != new Vector2(5, 5))
+        {
+            FaceBoard faceBoard = captureHandler.GetPiece((int)captureMove.x, (int)captureMove.y);
+            onAIPlacePiece?.Invoke(faceBoard);
+            Debug.Log($"Capturing Piece at: {captureMove}");
+            return;
+        }
+
         List<Vector2> possiblesMoves = GetAllPossibleMoves(board);
-        
-        //Get random move if capture not available
 
         Vector2 randomMove = possiblesMoves[Random.Range(0, possiblesMoves.Count)];
         
-        Debug.Log(randomMove);
+        Debug.Log($"Random Move at: {randomMove}, from {boardPiece.playerTurn}");
+        FaceBoard faceBoard1 = captureHandler.GetPiece((int)randomMove.x, (int)randomMove.y);
         
-        onAIPlacePiece?.Invoke(randomMove);
+        onAIPlacePiece?.Invoke(faceBoard1);
     }
 
     private bool IsBoardFull(string[,] board)
@@ -55,5 +68,50 @@ public class AIEasyHandler : MonoBehaviour
             }
         }
         return possibleMoves;
+    }
+    
+    private Vector2 GetCaptureMove(string[,] board, string currentPlayerColor) //Make a copy of the board and check for captures
+    {
+        List<Vector2> possibleMoves = GetAllPossibleMoves(board);
+        foreach (var move in possibleMoves)
+        {
+            string[,] simulatedBoard = (string[,])board.Clone();
+            simulatedBoard[(int)move.x, (int)move.y] = currentPlayerColor;
+            if (HasCapture(simulatedBoard, (int)move.x, (int)move.y, currentPlayerColor))
+            {
+                return move;
+            }
+        }
+        return new Vector2( 5, 5);
+    }
+    
+    private bool HasCapture(string[,] board, int x, int y, string currentPlayerColor)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            int dx = captureHandler.Directions[i, 0];
+            int dy = captureHandler.Directions[i, 1];
+
+            for (int direction = -1; direction <= 1; direction += 2)
+            {
+                List<Vector2> diagonalPositions = new List<Vector2>();
+                for (int j = 0; j < board.GetLength(0); j++)
+                {
+                    int newX = x + direction * dx * j;
+                    int newY = y + direction * dy * j;
+
+                    if (!captureHandler.IsInBounds(newX, newY, board.GetLength(0)))
+                        break;
+
+                    diagonalPositions.Add(new Vector2(newX, newY));
+                }
+
+                if (captureHandler.CheckDiagonals(diagonalPositions, board, currentPlayerColor))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

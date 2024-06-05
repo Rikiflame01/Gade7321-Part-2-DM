@@ -24,6 +24,7 @@ public class BoardManager : MonoBehaviour
     private int _numPiecesOnBoard;
     private bool isGameEnd;
     private Player _playerTurn;
+    private BoardMove currentBoardMove;
 
     private bool _isAITurn;
     
@@ -57,8 +58,6 @@ public class BoardManager : MonoBehaviour
 
     public void TryPlacePiece(Vector3 position, BoardPiece boardPiece, Vector3 coordinates) //Subscription to unity event 
     {
-        if(_isAITurn && AIGameplay) return;
-        
         if (boardPiece.IsPieceOccupied() || isGameEnd)
         {
             return;
@@ -71,6 +70,14 @@ public class BoardManager : MonoBehaviour
         PiecePlaced?.Invoke(gameEndAmount - _numPiecesOnBoard);
         
         ChangePlayerTurn();
+        
+        if(AIGameplay) _isAITurn = true;
+
+        if (_isAITurn && AIGameplay)
+        {
+            currentBoardMove.playerTurn = _playerTurn.ToString();
+            StartCoroutine(AIPlacePieceDelayed(currentBoardMove));
+        }
         
         if (_numPiecesOnBoard >= gameEndAmount) //Check for game end
         {
@@ -144,13 +151,8 @@ public class BoardManager : MonoBehaviour
                 //OnPiecePlaced?.Invoke(boardSix, x, y, _playerTurn.ToString()); //Fire event for capture logic
                 break;
         }
-        
-        if(AIGameplay) _isAITurn = true;
 
-        if (_isAITurn && AIGameplay)
-        {
-            StartCoroutine(AIPlacePieceDelayed(move));
-        }
+        currentBoardMove = move;
         
     }
 
@@ -161,6 +163,15 @@ public class BoardManager : MonoBehaviour
         onAIMove?.Invoke(boardData);
         
         if (AIGameplay) _isAITurn = false;
+    }
+
+    public void PlaceAIPieceOnBoard(FaceBoard faceBoard)
+    {
+        Vector3 pos = faceBoard.GetBoardPiece().transform.position;
+        BoardPiece boardPiece = faceBoard.GetBoardPiece();
+        Vector3 coordinates = faceBoard.Coordinates;
+        
+        TryPlacePiece(pos, boardPiece, coordinates);
     }
     
     void PlaceEdgePiece(string[,] boardAbove, string[,] boardBelow, string[,] boardLeft, string[,] boardRight, int row, int col, string piece)

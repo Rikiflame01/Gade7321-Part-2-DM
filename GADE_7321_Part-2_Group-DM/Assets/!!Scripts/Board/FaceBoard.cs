@@ -8,6 +8,7 @@ public class FaceBoard : MonoBehaviour
 {
     [field: SerializeField] public Vector3 Coordinates;
     [SerializeField] private bool changeStartPosition;
+    //[SerializeField] private BoardData boardData;
     
     public Transform SpawnPosition { get; private set; }
     public BoardPiece BoardPiece { get; private set; }
@@ -22,6 +23,8 @@ public class FaceBoard : MonoBehaviour
     private void Awake()
     {
         _pieceSpawner = FindObjectOfType<PieceSpawner>();
+        
+        //boardData.allFaceBoards.Add(this);
     }
 
      private void OnEnable()
@@ -81,7 +84,7 @@ public class FaceBoard : MonoBehaviour
         
     }
 
-    public void ChangePieceColour(bool blue) //Using a raycast again to get the board piece
+    public BoardPiece GetBoardPiece()
     {
         RaycastHit hit;
 
@@ -90,8 +93,35 @@ public class FaceBoard : MonoBehaviour
             Debug.DrawRay(transform.position, transform.right * 2f, Color.red);
             if (hit.transform.TryGetComponent<BoardPiece>(out BoardPiece piece))
             {
-                piece.ChangePieceColour(blue);
+                return piece;
             }
         }
+
+        return null;
     }
+
+    public void ChangePieceColour(bool blue) //Using a raycast again to get the board piece
+    {
+        GetBoardPiece().ChangePieceColour(blue);
+        
+        // RaycastHit hit;
+        //
+        // if (Physics.Raycast(transform.position, transform.right, out hit, 2, layerMask)) //
+        // {
+        //     Debug.DrawRay(transform.position, transform.right * 2f, Color.red);
+        //     if (hit.transform.TryGetComponent<BoardPiece>(out BoardPiece piece))
+        //     {
+        //         piece.ChangePieceColour(blue);
+        //     }
+        // }
+    }
+    
+    
+}
+
+[CreateAssetMenu(menuName = "BoardData")]
+public class BoardData : ScriptableObject
+{
+    public List<FaceBoard> allFaceBoards;
+    public List<FaceBoard> activeFaceBoards;
 }

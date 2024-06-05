@@ -2772,7 +2772,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onAIPlacePiece:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1755300383}
+        m_TargetAssemblyTypeName: BoardManager, Assembly-CSharp
+        m_MethodName: PlaceAIPieceOnBoard
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  captureHandler: {fileID: 491471557}
 --- !u!1 &1126402510
 GameObject:
   m_ObjectHideFlags: 0
@@ -4582,6 +4595,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b0dab921982c5040b0e260772fe37c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1755300383 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3687889544009828973, guid: edd308d06183af244b998cc4ea15ceca,
+    type: 3}
+  m_PrefabInstance: {fileID: 680595293}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755300377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b6a380d652bd4f4d958fc35bffe8172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1760688770 stripped
