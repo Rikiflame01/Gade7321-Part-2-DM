@@ -12,12 +12,20 @@ public class BoardManager : MonoBehaviour
     [Header("References")] 
     [SerializeField] private GameStateData gameStateData;
     [SerializeField] private PlayerInfo playerInfo;
-    [SerializeField] private int gameEndAmount = 120;
     [SerializeField] private PieceSpawner _pieceSpawner;
+    
+    [Header("Settings: ")]
+    [SerializeField] private int gameEndAmount = 120;
+    
+    [Space]
+    [Header("AI Gameplay")]
+    [SerializeField] private bool AIGameplay;
 
     private int _numPiecesOnBoard;
     private bool isGameEnd;
     private Player _playerTurn;
+
+    private bool _isAITurn;
     
     //All boards separated for minimax, minimxa will be calculated on board being played
     private string[,] boardOne = new string[5, 5]; //Front Face on start
@@ -30,6 +38,7 @@ public class BoardManager : MonoBehaviour
     public UnityEvent<BoardMove> OnPiecePlaced;
     public UnityEvent<int> PiecePlaced;
     public UnityEvent OnEndGame;
+    public UnityEvent<BoardMove> onAIMove;
 
     private void Awake()
     {
@@ -48,6 +57,8 @@ public class BoardManager : MonoBehaviour
 
     public void TryPlacePiece(Vector3 position, BoardPiece boardPiece, Vector3 coordinates) //Subscription to unity event 
     {
+        if(_isAITurn && AIGameplay) return;
+        
         if (boardPiece.IsPieceOccupied() || isGameEnd)
         {
             return;
@@ -133,8 +144,25 @@ public class BoardManager : MonoBehaviour
                 //OnPiecePlaced?.Invoke(boardSix, x, y, _playerTurn.ToString()); //Fire event for capture logic
                 break;
         }
+        
+        if(AIGameplay) _isAITurn = true;
+
+        if (_isAITurn && AIGameplay)
+        {
+            StartCoroutine(AIPlacePieceDelayed(move));
+        }
+        
     }
 
+    private IEnumerator AIPlacePieceDelayed(BoardMove boardData)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        onAIMove?.Invoke(boardData);
+        
+        if (AIGameplay) _isAITurn = false;
+    }
+    
     void PlaceEdgePiece(string[,] boardAbove, string[,] boardBelow, string[,] boardLeft, string[,] boardRight, int row, int col, string piece)
     {
         //Get edge pieces to update other 2D boards, as boards are connected 
