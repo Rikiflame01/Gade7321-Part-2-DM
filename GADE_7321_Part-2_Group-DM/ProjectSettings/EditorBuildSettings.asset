@@ -19,5 +19,5 @@ EditorBuildSettings:
     guid: 51cfc5cbed6fb4743a325002e284acee
   - enabled: 1
     path: Assets/Scenes/MinimaxScene.unity
-    guid: 324d7e73491ec32489351cdfcd7bebf9
+    guid: c97b9e28d7140ef4b82302dad837efc7
   m_configObjects: {}

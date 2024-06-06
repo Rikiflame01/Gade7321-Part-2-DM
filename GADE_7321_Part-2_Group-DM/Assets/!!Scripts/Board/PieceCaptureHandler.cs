@@ -1,34 +1,23 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using __Scripts;
-using __Scripts.Board;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PieceCaptureHandler : MonoBehaviour
 {
     [SerializeField] private List<FaceBoard> pieces;
     [SerializeField] private GameStateData data;
-    
+
     // Directions vectors for diagonals: northeast, northwest, southeast, southwest
     public int[,] Directions = new int[,]
     {
         { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 }
     };
-    private string[,] test = new string[5, 5];
-
-    private List<Vector2> emptyList = new List<Vector2>();
 
     private void Start()
     {
         FaceBoard.OnPieceSpawn += PopulatePieces;
-        
-        //GetDiagonals(test, 2,2, "Red");
-        
-        List<Vector2> edgePieces = new List<Vector2>();
 
-        for (int i = 0; i < 5; i++) //Set edge pieces
+        List<Vector2> edgePieces = new List<Vector2>();
+        for (int i = 0; i < 5; i++) // Set edge pieces
         {
             edgePieces.Add(new Vector2(0, i));
             edgePieces.Add(new Vector2(i, 0));
@@ -47,13 +36,16 @@ public class PieceCaptureHandler : MonoBehaviour
         string[,] board = boardMove.board;
         int x = boardMove.x;
         int y = boardMove.y;
-        string currentPlayerColour = boardMove.playerTurn;
-        
-        GetDiagonals(board, x, y, currentPlayerColour);
+
+        Debug.Log($"CheckDiagonalTake called at ({x}, {y})");
+        GetDiagonals(board, x, y);
     }
 
-    public void GetDiagonals(string[,] board, int x, int y, string currentPlayerColour)
+    public void GetDiagonals(string[,] board, int x, int y)
     {
+        Debug.ClearDeveloperConsole();
+        Debug.Log("Showing board");
+        ShowBoard(board);
         int size = board.GetLength(0);
 
         for (int i = 0; i < 4; i++)
@@ -61,10 +53,10 @@ public class PieceCaptureHandler : MonoBehaviour
             int dx = Directions[i, 0];
             int dy = Directions[i, 1];
 
+            List<Vector2> diagonalPositions = new List<Vector2>();
             // Check in both positive and negative directions
             for (int direction = -1; direction <= 1; direction += 2)
             {
-                List<Vector2> diagonalPositions = new List<Vector2>();
                 for (int j = 0; j < size; j++)
                 {
                     int newX = x + direction * dx * j;
@@ -75,33 +67,48 @@ public class PieceCaptureHandler : MonoBehaviour
 
                     diagonalPositions.Add(new Vector2(newX, newY));
                 }
-                CheckDiagonals(diagonalPositions, board, currentPlayerColour);
             }
+
+            diagonalPositions.Sort((a, b) =>
+            {
+                if (a.x == b.x)
+                    return a.y.CompareTo(b.y);
+                return a.x.CompareTo(b.x);
+            });
+
+            CheckDiagonals(diagonalPositions, board);
         }
     }
 
-    public bool CheckDiagonals(List<Vector2> diagonalPositions, string[,] board, string currentPlayerColour)
+    public bool CheckDiagonals(List<Vector2> diagonalPositions, string[,] board)
+    {
+        bool captured = CapturePieces(diagonalPositions, board);
+        bool trapped = TrappedPiece(diagonalPositions, board);
+        return captured || trapped;
+    }
+
+    public bool CheckCapturesOnly(string[,] board, int x, int y)
+    {
+        //List<Vector2> = 
+        //bool captured = CapturePieces(diagonalPositions, board)
+
+        return false;
+    }
+
+    private bool CapturePieces(List<Vector2> diagonalPositions, string[,] board)
     {
         int size = diagonalPositions.Count;
-
-        // Debug output for diagonals
-        Debug.Log("Diagonal Positions:");
-        foreach (var pos in diagonalPositions)
-        {
-            Debug.Log($"({pos.x}, {pos.y}) - {board[(int)pos.x, (int)pos.y]}");
-        }
+        bool captured = false;
 
         for (int i = 0; i < size - 2; i++)
         {
             string firstPieceColor = board[(int)diagonalPositions[i].x, (int)diagonalPositions[i].y];
-            if (firstPieceColor == "_" || firstPieceColor != currentPlayerColour)
-                continue;
+            if (firstPieceColor == "_") continue;
 
             for (int j = i + 2; j < size; j++)
             {
                 string lastPieceColor = board[(int)diagonalPositions[j].x, (int)diagonalPositions[j].y];
-                if (lastPieceColor != currentPlayerColour)
-                    continue;
+                if (lastPieceColor != firstPieceColor) continue;
 
                 bool validCapture = true;
                 List<Vector2> capturePositions = new List<Vector2>();
@@ -109,7 +116,7 @@ public class PieceCaptureHandler : MonoBehaviour
                 for (int k = i + 1; k < j; k++)
                 {
                     string middlePieceColor = board[(int)diagonalPositions[k].x, (int)diagonalPositions[k].y];
-                    if (middlePieceColor == "_" || middlePieceColor == currentPlayerColour)
+                    if (middlePieceColor == "_" || middlePieceColor == firstPieceColor)
                     {
                         validCapture = false;
                         break;
@@ -121,50 +128,98 @@ public class PieceCaptureHandler : MonoBehaviour
                 {
                     foreach (var pos in capturePositions)
                     {
-                        board[(int)pos.x, (int)pos.y] = currentPlayerColour;
-                        ChangePieceVisual((int)pos.x, (int)pos.y, currentPlayerColour == "Blue");
+                        board[(int)pos.x, (int)pos.y] = firstPieceColor;
+                        ChangePieceVisual((int)pos.x, (int)pos.y, firstPieceColor == "Blue");
                     }
-
-                    return true;
+                    captured = true;
                 }
+            }
+        }
+
+        return captured;
+    }
+
+    private bool TrappedPiece(List<Vector2> diagonalPositions, string[,] board)
+    {
+        int size = diagonalPositions.Count;
+        string firstColour = "_";
+        int firstIndex = 0;
+        int lastIndex = 0;
+        string lastColour = "_";
+        List<string> middleColours = new List<string>();
+
+        for (int i = 0; i < size; i++)
+        {
+            string test = board[(int)diagonalPositions[i].x, (int)diagonalPositions[i].y];
+
+            if (test != "_" && firstColour == "_")
+            {
+                firstColour = test;
+                firstIndex = i;
+            }
+
+            if (i > 1 && test != "_" && test == firstColour)
+            {
+                lastColour = test;
+                lastIndex = i;
+            }
+            Debug.Log($"Checking Diagonal at ( {(int)diagonalPositions[i].x}, {(int)diagonalPositions[i].y}");
+        }
+
+        if (lastIndex - firstIndex < 2) return false;
+
+        for (int i = firstIndex + 1; i < lastIndex; i++)
+        {
+            string test = board[(int)diagonalPositions[i].x, (int)diagonalPositions[i].y];
+            string middlePieceColor = board[(int)diagonalPositions[i].x, (int)diagonalPositions[i].y];
+            middleColours.Add(middlePieceColor);
+        }
+
+        if (lastColour != "_" && firstColour != "_")
+        {
+            if (middleColours.Count > 0 && middleColours.TrueForAll(color => color != firstColour && color != "_"))
+            {
+                Debug.Log($"Trapping pieces between ({diagonalPositions[firstIndex].x}, {diagonalPositions[firstIndex].y}) and ({diagonalPositions[lastIndex].x}, {diagonalPositions[lastIndex].y})");
+
+                for (int k = firstIndex + 1; k < lastIndex; k++)
+                {
+                    Vector2 pos = diagonalPositions[k];
+                    board[(int)pos.x, (int)pos.y] = firstColour;
+                    ChangePieceVisual((int)pos.x, (int)pos.y, firstColour == "Blue");
+                }
+                return true;
             }
         }
 
         return false;
     }
 
-    string  GetOppositeColour(string colour) //Utility method
+    string GetOppositeColour(string colour) // Utility method
     {
-        var oppositeColour = colour == "Blue" ? "Red" : "Blue";
-        return oppositeColour;
+        return colour == "Blue" ? "Red" : "Blue";
     }
-    
 
-    public bool IsInBounds(int x, int y, int size) //Check for in bounds
+    public bool IsInBounds(int x, int y, int size) // Check for in bounds
     {
         return x >= 0 && y >= 0 && x < size && y < size;
     }
 
-    public void PopulatePieces(FaceBoard piece) //Get all FaceBoards
+    public void PopulatePieces(FaceBoard piece) // Get all FaceBoards
     {
         pieces.Add(piece);
     }
 
-    private void ShowBoard(string[,] board) //Show board 2D array for debugging
+    private void ChangePieceVisual(int x, int y, bool isBlue)
     {
-        string debugBoard = "";
-        for (int i = 0; i < board.GetLength(0); i++)
+        FaceBoard piece = GetPiece(x, y);
+        if (piece != null)
         {
-            for (int j = 0; j < board.GetLength(1); j++)
-            {
-                debugBoard += board[i, j];
-            }
-
-            debugBoard += "\n";
+            piece.ChangePieceColour(isBlue);
         }
-
-        debugBoard += $" board: {data.currentBoard}";
-        Debug.Log(debugBoard);
+        else
+        {
+            Debug.LogWarning($"No piece found at ({x}, {y}) to change visual.");
+        }
     }
 
     public FaceBoard GetPiece(int x, int y)
@@ -173,17 +228,24 @@ public class PieceCaptureHandler : MonoBehaviour
         {
             if (piece.Coordinates.x == x && piece.Coordinates.y == y && piece.isActiveAndEnabled)
             {
-                //Debug.Log($"Changing piece colour, piece {piece.Coordinates} and face: {piece.face}");
                 return piece;
             }
         }
-
         return null;
     }
 
-    private void ChangePieceVisual(int x, int y, bool isBlue) //changing visual of Board Piece
+    private void ShowBoard(string[,] board)
     {
-        GetPiece(x,y).ChangePieceColour(isBlue);
-        
+        string debugBoard = "";
+        for (int i = 0; i < board.GetLength(0); i++)
+        {
+            for (int j = 0; j < board.GetLength(1); j++)
+            {
+                debugBoard += board[i, j] + " ";
+            }
+            debugBoard += "\n";
+        }
+
+        Debug.Log("\n" + debugBoard);
     }
 }
