@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PieceCaptureHandler : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class PieceCaptureHandler : MonoBehaviour
     {
         { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 }
     };
+
+    public UnityEvent<string> onPieceTaken;
 
     private void Start()
     {
@@ -43,9 +46,6 @@ public class PieceCaptureHandler : MonoBehaviour
 
     public void GetDiagonals(string[,] board, int x, int y)
     {
-        Debug.ClearDeveloperConsole();
-        Debug.Log("Showing board");
-        ShowBoard(board);
         int size = board.GetLength(0);
 
         for (int i = 0; i < 4; i++)
@@ -78,6 +78,7 @@ public class PieceCaptureHandler : MonoBehaviour
 
             CheckDiagonals(diagonalPositions, board);
         }
+        
     }
 
     public bool CheckDiagonals(List<Vector2> diagonalPositions, string[,] board)
@@ -87,12 +88,11 @@ public class PieceCaptureHandler : MonoBehaviour
         return captured || trapped;
     }
 
-    public bool CheckCapturesOnly(string[,] board, int x, int y)
+    public bool CheckCapturesOnly(List<Vector2> diagonalPositions, string[,] board)
     {
-        //List<Vector2> = 
-        //bool captured = CapturePieces(diagonalPositions, board)
+        bool captured = CapturePieces(diagonalPositions, board);
 
-        return false;
+        return captured;
     }
 
     private bool CapturePieces(List<Vector2> diagonalPositions, string[,] board)
@@ -102,13 +102,13 @@ public class PieceCaptureHandler : MonoBehaviour
 
         for (int i = 0; i < size - 2; i++)
         {
-            string firstPieceColor = board[(int)diagonalPositions[i].x, (int)diagonalPositions[i].y];
-            if (firstPieceColor == "_") continue;
+            string firstPieceColour = board[(int)diagonalPositions[i].x, (int)diagonalPositions[i].y];
+            if (firstPieceColour == "_") continue;
 
             for (int j = i + 2; j < size; j++)
             {
-                string lastPieceColor = board[(int)diagonalPositions[j].x, (int)diagonalPositions[j].y];
-                if (lastPieceColor != firstPieceColor) continue;
+                string lastPieceColour = board[(int)diagonalPositions[j].x, (int)diagonalPositions[j].y];
+                if (lastPieceColour != firstPieceColour) continue;
 
                 bool validCapture = true;
                 List<Vector2> capturePositions = new List<Vector2>();
@@ -116,7 +116,7 @@ public class PieceCaptureHandler : MonoBehaviour
                 for (int k = i + 1; k < j; k++)
                 {
                     string middlePieceColor = board[(int)diagonalPositions[k].x, (int)diagonalPositions[k].y];
-                    if (middlePieceColor == "_" || middlePieceColor == firstPieceColor)
+                    if (middlePieceColor == "_" || middlePieceColor == firstPieceColour)
                     {
                         validCapture = false;
                         break;
@@ -128,8 +128,9 @@ public class PieceCaptureHandler : MonoBehaviour
                 {
                     foreach (var pos in capturePositions)
                     {
-                        board[(int)pos.x, (int)pos.y] = firstPieceColor;
-                        ChangePieceVisual((int)pos.x, (int)pos.y, firstPieceColor == "Blue");
+                        board[(int)pos.x, (int)pos.y] = firstPieceColour;
+                        ChangePieceVisual((int)pos.x, (int)pos.y, firstPieceColour == "Blue");
+                        onPieceTaken?.Invoke($"{GetOppositeColour(firstPieceColour)} was captured by {firstPieceColour}");
                     }
                     captured = true;
                 }
@@ -171,13 +172,13 @@ public class PieceCaptureHandler : MonoBehaviour
         for (int i = firstIndex + 1; i < lastIndex; i++)
         {
             string test = board[(int)diagonalPositions[i].x, (int)diagonalPositions[i].y];
-            string middlePieceColor = board[(int)diagonalPositions[i].x, (int)diagonalPositions[i].y];
-            middleColours.Add(middlePieceColor);
+            string middlePieceColour = board[(int)diagonalPositions[i].x, (int)diagonalPositions[i].y];
+            middleColours.Add(middlePieceColour);
         }
 
         if (lastColour != "_" && firstColour != "_")
         {
-            if (middleColours.Count > 0 && middleColours.TrueForAll(color => color != firstColour && color != "_"))
+            if (middleColours.Count > 0 && middleColours.TrueForAll(colour => colour != firstColour && colour != "_"))
             {
                 Debug.Log($"Trapping pieces between ({diagonalPositions[firstIndex].x}, {diagonalPositions[firstIndex].y}) and ({diagonalPositions[lastIndex].x}, {diagonalPositions[lastIndex].y})");
 
@@ -186,6 +187,7 @@ public class PieceCaptureHandler : MonoBehaviour
                     Vector2 pos = diagonalPositions[k];
                     board[(int)pos.x, (int)pos.y] = firstColour;
                     ChangePieceVisual((int)pos.x, (int)pos.y, firstColour == "Blue");
+                    onPieceTaken?.Invoke($"{GetOppositeColour(firstColour)} entered a trap");
                 }
                 return true;
             }

@@ -98,9 +98,7 @@ public class AIEasyHandler : MonoBehaviour
     
     private bool HasCapture(string[,] board, int x, int y, string currentPlayerColor)
     {
-        
-        
-        /*for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             int dx = captureHandler.Directions[i, 0];
             int dy = captureHandler.Directions[i, 1];
@@ -119,12 +117,12 @@ public class AIEasyHandler : MonoBehaviour
                     diagonalPositions.Add(new Vector2(newX, newY));
                 }
 
-                if (captureHandler.CheckDiagonals(diagonalPositions, board))
+                if (captureHandler.CheckCapturesOnly(diagonalPositions, board))
                 {
                     return true;
                 }
             }
-        }*/
+        }
         return false;
     }
 }
