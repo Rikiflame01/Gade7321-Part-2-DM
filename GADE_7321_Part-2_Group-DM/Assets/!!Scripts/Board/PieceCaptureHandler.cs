@@ -115,8 +115,8 @@ public class PieceCaptureHandler : MonoBehaviour
 
                 for (int k = i + 1; k < j; k++)
                 {
-                    string middlePieceColor = board[(int)diagonalPositions[k].x, (int)diagonalPositions[k].y];
-                    if (middlePieceColor == "_" || middlePieceColor == firstPieceColour)
+                    string middlePieceColour = board[(int)diagonalPositions[k].x, (int)diagonalPositions[k].y];
+                    if (middlePieceColour == "_" || middlePieceColour == firstPieceColour)
                     {
                         validCapture = false;
                         break;
