@@ -164,7 +164,7 @@ public class PieceCaptureHandler : MonoBehaviour
                 lastColour = test;
                 lastIndex = i;
             }
-            Debug.Log($"Checking Diagonal at ( {(int)diagonalPositions[i].x}, {(int)diagonalPositions[i].y}");
+            //Debug.Log($"Checking Diagonal at ( {(int)diagonalPositions[i].x}, {(int)diagonalPositions[i].y}");
         }
 
         if (lastIndex - firstIndex < 2) return false;

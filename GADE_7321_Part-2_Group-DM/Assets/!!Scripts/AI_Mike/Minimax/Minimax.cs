@@ -7,7 +7,7 @@ public class Minimax : MonoBehaviour
     [SerializeField] private UtilityFunctionManager utilityFunction;
     [SerializeField] private PieceCaptureHandler captureHandler;
     
-    public (int, int) MinimaxFunction(string[,] board, int depth, bool isMaximizingPlayer, string currentPlayerColor)
+    public (float, float) MinimaxFunction(string[,] board, int depth, bool isMaximizingPlayer, string currentPlayerColor)
     {
         string opponentColor = currentPlayerColor == "Red" ? "Blue" : "Red";
 
@@ -18,12 +18,12 @@ public class Minimax : MonoBehaviour
 
         if (isMaximizingPlayer)
         {
-            int maxEval = int.MinValue;
-            int bestMove = -1;
+            float maxEval = int.MinValue;
+            float bestMove = -1;
             foreach (var move in GetAllPossibleMoves(board, currentPlayerColor))
             {
                 string[,] newBoard = ApplyMove(board, move, currentPlayerColor);
-                int eval = MinimaxFunction(newBoard, depth - 1, false, currentPlayerColor).Item1;
+                float eval = MinimaxFunction(newBoard, depth - 1, false, currentPlayerColor).Item1;
                 if (eval > maxEval)
                 {
                     maxEval = eval;
@@ -34,12 +34,12 @@ public class Minimax : MonoBehaviour
         }
         else
         {
-            int minEval = int.MaxValue;
-            int bestMove = -1;
+            float minEval = int.MaxValue;
+            float bestMove = -1;
             foreach (var move in GetAllPossibleMoves(board, opponentColor))
             {
                 string[,] newBoard = ApplyMove(board, move, opponentColor);
-                int eval = MinimaxFunction(newBoard, depth - 1, true, currentPlayerColor).Item1;
+                float eval = MinimaxFunction(newBoard, depth - 1, true, currentPlayerColor).Item1;
                 if (eval < minEval)
                 {
                     minEval = eval;

@@ -1649,6 +1649,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3687889544009828973, guid: edd308d06183af244b998cc4ea15ceca,
         type: 3}
+      propertyPath: AIGameplay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687889544009828973, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
       propertyPath: playerInfo
       value: 
       objectReference: {fileID: 11400000, guid: 2d413a639d3ad69409bcb23605db3b40,

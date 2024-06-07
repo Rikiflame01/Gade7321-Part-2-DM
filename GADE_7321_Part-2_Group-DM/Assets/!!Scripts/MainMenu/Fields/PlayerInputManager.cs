@@ -60,8 +60,8 @@ public class PlayerInputManager : MonoBehaviour
 
     private void EnterPlayerInfoAI(string difficulty)
     {
-        playerInfo.player1.playerName = "Player";
-        playerInfo.player2.playerName = difficulty + "AI";
+        playerInfo.player1.playerName = difficulty + "AI" ;
+        playerInfo.player2.playerName = "Player";
             
         if (Random.value > 0.5f)
         {

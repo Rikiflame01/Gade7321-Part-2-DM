@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UtilityFunctionManager : MonoBehaviour
 {
-    public int UtilityFunction(string[,] board, string currentPlayerColor)
+    public float UtilityFunction(string[,] board, string currentPlayerColor)
     {
         int w1 = 1, w2 = 1, w3 = 1, w4 = 1, w5 = 1;
 
@@ -29,25 +29,30 @@ public class UtilityFunctionManager : MonoBehaviour
 
     private int DiagonalControl(string[,] board, string color)
     {
-        // Custom logic to calculate diagonal control
+        //regular top left, top right bottom, bottom right = 5
+        
         return 0; // Placeholder
     }
 
     private int Vulnerability(string[,] board, string color)
     {
-        // Custom logic to calculate vulnerability
+        //Use trapping for vulnerability of move
+        //What is the best move for the opposite colour, so the AI won't move there
         return 0; // Placeholder
     }
 
     private int StrategicPositions(string[,] board, string color)
     {
-        // Custom logic to calculate strategic positions
+        //regular top left, top right bottom, bottom right = 5
+        //other edge pieces = 3
         return 0; // Placeholder
     }
 
     private int HighValuePosition(string[,] board, string color)
     {
-        // Custom logic to calculate high value positions
+        //If an AI player can capture 3 pieces = very high value position
+        // " 2 = high value
+        //" 1 = moderate value
         return 0; // Placeholder
     }
 }
