@@ -40,6 +40,7 @@ public class BoardManager : MonoBehaviour
     public UnityEvent<int> PiecePlaced;
     public UnityEvent OnEndGame;
     public UnityEvent<BoardMove> onAIMove;
+    public UnityEvent<int, int> onCheckNumPieces;
 
     private void Awake()
     {
@@ -170,6 +171,7 @@ public class BoardManager : MonoBehaviour
         }
 
         currentBoardMove = move;
+        onCheckNumPieces?.Invoke(NumPieces(move.board, "Red"), NumPieces(move.board, "Blue"));
         
     }
     
@@ -255,7 +257,22 @@ public class BoardManager : MonoBehaviour
     }
 
     #endregion
-    
+
+
+    private int NumPieces(string[,] board, string colour)
+    {
+        int value = 0;
+
+        foreach (var piece in board)
+        {
+            if (piece == colour)
+            {
+                value++;
+            }
+        }
+        
+        return value;
+    }
 }
 
 public struct BoardMove

@@ -45,13 +45,18 @@ public class GameStateUI : MonoBehaviour
     {
         //Set UI for perfect information
         piecesLeftText.text = $"{numPiecesLeft.ToString()}";
-        bluePiecesText.text = $"{gameStateData.numBluePieces}";
-        redPiecesText.text = $"{gameStateData.numRedPieces}";
         turnText.text = turnText.text == playerInfo.player1.playerName
             ? playerInfo.player2.playerName
             : playerInfo.player1.playerName;
         colourIndicator.color = gameStateData.playerTurn != Player.Blue ?  Color.blue : Color.red;
     }
+
+    public void ShowNumberOfPiecesPerColour(int red, int blue)
+    {
+        bluePiecesText.text = $"{blue}";
+        redPiecesText.text = $"{red}";
+    }
+    
 
     public void UpdateUI()
     {

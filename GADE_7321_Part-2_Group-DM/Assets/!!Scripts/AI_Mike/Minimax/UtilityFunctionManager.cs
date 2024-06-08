@@ -101,6 +101,7 @@ public class UtilityFunctionManager : MonoBehaviour
                     }
                     
                     int captureCount = captureData.CapturePositions.Count;
+                    Debug.LogError($"Capture count: {count}");
                     if (captureCount == 3) count += 100;
                     else if (captureCount == 2) count += 90;
                     else if (captureCount == 1) count += 80;

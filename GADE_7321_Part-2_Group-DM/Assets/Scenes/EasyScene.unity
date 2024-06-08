@@ -1632,6 +1632,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3687889544009828973, guid: edd308d06183af244b998cc4ea15ceca,
         type: 3}
+      propertyPath: onCheckNumPieces.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687889544009828973, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
       propertyPath: OnEndGame.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 26466719}
@@ -1640,6 +1645,31 @@ PrefabInstance:
       propertyPath: PiecePlaced.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1878722137}
+    - target: {fileID: 3687889544009828973, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
+      propertyPath: onCheckNumPieces.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1878722137}
+    - target: {fileID: 3687889544009828973, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
+      propertyPath: onCheckNumPieces.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687889544009828973, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
+      propertyPath: onCheckNumPieces.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowNumberOfPiecesPerColour
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687889544009828973, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
+      propertyPath: onCheckNumPieces.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameStateUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687889544009828973, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
+      propertyPath: onCheckNumPieces.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5839770161524567148, guid: edd308d06183af244b998cc4ea15ceca,
         type: 3}
       propertyPath: onPieceTaken.m_PersistentCalls.m_Calls.Array.size
