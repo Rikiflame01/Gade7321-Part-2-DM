@@ -7,7 +7,6 @@ public class PieceCaptureHandler : MonoBehaviour
     [SerializeField] private List<FaceBoard> pieces;
     [SerializeField] private GameStateData data;
 
-    // Directions vectors for diagonals: northeast, northwest, southeast, southwest
     public int[,] Directions = new int[,]
     {
         { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 }
@@ -41,10 +40,10 @@ public class PieceCaptureHandler : MonoBehaviour
         int y = boardMove.y;
 
         Debug.Log($"CheckDiagonalTake called at ({x}, {y})");
-        GetDiagonals(board, x, y, boardMove.playerTurn);
+        GetDiagonals(board, x, y, boardMove.playerTurn, true);
     }
 
-    public void GetDiagonals(string[,] board, int x, int y, string colour)
+    public void GetDiagonals(string[,] board, int x, int y, string colour, bool takePieces)
     {
         int size = board.GetLength(0);
 
@@ -76,17 +75,17 @@ public class PieceCaptureHandler : MonoBehaviour
                 return a.x.CompareTo(b.x);
             });
 
-            CheckDiagonals(diagonalPositions, board, colour);
+            CheckDiagonals(diagonalPositions, board, colour, takePieces);
         }
     }
 
-    private bool CheckDiagonals(List<Vector2> diagonalPositions, string[,] board, string colour)
+    private bool CheckDiagonals(List<Vector2> diagonalPositions, string[,] board, string colour, bool takePieces)
     {
-        bool captured = CheckCapturesOnly(diagonalPositions, board, colour);
+        bool captured = CheckCapturesOnly(diagonalPositions, board, colour, takePieces);
         return captured;
     }
 
-    public bool CheckCapturesOnly(List<Vector2> diagonalPositions, string[,] board, string colour)
+    public bool CheckCapturesOnly(List<Vector2> diagonalPositions, string[,] board, string colour, bool takePieces)
     {
         CaptureData data = CapturePieces(diagonalPositions, board, colour);
         if (data.CapturePositions == null) return false;
@@ -96,14 +95,14 @@ public class PieceCaptureHandler : MonoBehaviour
             foreach (var pos in data.CapturePositions)
             {
                 board[(int)pos.x, (int)pos.y] = data.FirstColour;
-                ChangePieceVisual((int)pos.x, (int)pos.y, data.FirstColour == "Blue");
+                if(takePieces) ChangePieceVisual((int)pos.x, (int)pos.y, data.FirstColour == "Blue");
                 if (data.FirstColour != colour)
                 {
-                    onPieceTaken?.Invoke($"{GetOppositeColour(data.FirstColour)} was trapped by {data.FirstColour}");
+                    //onPieceTaken?.Invoke($"{GetOppositeColour(data.FirstColour)} was trapped by {data.FirstColour}");
                 }
                 else
                 {
-                    onPieceTaken?.Invoke($"{GetOppositeColour(data.FirstColour)} was captured by {data.FirstColour}");
+                    //onPieceTaken?.Invoke($"{GetOppositeColour(data.FirstColour)} was captured by {data.FirstColour}");
                 }
                 
             }
@@ -113,25 +112,28 @@ public class PieceCaptureHandler : MonoBehaviour
         return false;
     }
 
-    public bool CheckTrapsOnly(List<Vector2> diagonalPositions, string[,] board, string colour)
+    public bool CheckTrapsOnly(List<Vector2> diagonalPositions, string[,] board, string colour, bool takePieces)
     {
         CaptureData data = CapturePieces(diagonalPositions, board, colour);
         if (data.CapturePositions == null) return false;
 
         if (data.CapturePositions.Count > 0)
         {
-            bool trap = false;
             foreach (var pos in data.CapturePositions)
             {
-                board[(int)pos.x, (int)pos.y] = data.FirstColour;
-                ChangePieceVisual((int)pos.x, (int)pos.y, data.FirstColour == "Blue");
-                //onPieceTaken?.Invoke($"{GetOppositeColour(data.FirstColour)} was captured by {data.FirstColour}");
-            }
+                if (data.FirstColour != colour)
+                {
+                    //onPieceTaken?.Invoke($"{GetOppositeColour(data.FirstColour)} was trapped by {data.FirstColour}");
+                    if(!takePieces) return true;
+                }
 
-            if (trap)
-            {
-                onPieceTaken?.Invoke($"{colour} was trapped by {data.FirstColour}");
-                return true;
+                if (takePieces)
+                {
+                    board[(int)pos.x, (int)pos.y] = data.FirstColour;
+                    ChangePieceVisual((int)pos.x, (int)pos.y, data.FirstColour == "Blue");
+                }
+                
+                //onPieceTaken?.Invoke($"{GetOppositeColour(data.FirstColour)} was captured by {data.FirstColour}");
             }
         }
 

@@ -9,6 +9,7 @@ public class MinimaxHandler : MonoBehaviour
     [SerializeField] private Minimax minimax;
     [SerializeField] private PieceCaptureHandler captureHandler;
     [SerializeField] private string aiColour = "Red";
+    [SerializeField] private GameStateData gameStateData;
 
     [Header("Settings")] public int miniMaxDepth = 4;
 
@@ -26,6 +27,7 @@ public class MinimaxHandler : MonoBehaviour
 
         // Call the Minimax function to get the best move
         var result = minimax.MinimaxFunction(board, miniMaxDepth, true, aiColour, float.MinValue, float.MaxValue);
+        Debug.Log($"Best Result= {result.Item1}");
         Vector2 bestMove = result.Item2;
 
         if (bestMove != Vector2.negativeInfinity)
@@ -52,6 +54,7 @@ public class MinimaxHandler : MonoBehaviour
             AITurn = false
         };
         onAIPlacePiece?.Invoke(boardData);
+        gameStateData.aiPlaying = false;
     }
 
     private bool IsBoardFull(string[,] board)

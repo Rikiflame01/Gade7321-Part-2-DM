@@ -45,6 +45,7 @@ public class PlayerMouseController : MonoBehaviour
     
     void OnMouseClick(InputAction.CallbackContext obj)
     {
+        if(gameStateData.aiPlaying) return;
         Debug.Log("Mouse Click");
         RaycastHit hit;
 
@@ -65,6 +66,8 @@ public class PlayerMouseController : MonoBehaviour
 
     private void SubmitMoveAgainstAI(FaceBoard piece)
     {
+        if(gameStateData.aiPlaying) return;
+        
         MoveData moveData = new MoveData()
         {
             Position = piece.SpawnPosition.position,
@@ -74,6 +77,7 @@ public class PlayerMouseController : MonoBehaviour
         };
         
         onBoardPiecePlacedVAI?.Invoke(moveData);
+        gameStateData.aiPlaying = true;
     }
     
 }

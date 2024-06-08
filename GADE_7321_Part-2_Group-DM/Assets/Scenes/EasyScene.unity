@@ -1580,6 +1580,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Managers
       objectReference: {fileID: 0}
+    - target: {fileID: 1597998505283440372, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
+      propertyPath: gameStateData
+      value: 
+      objectReference: {fileID: 11400000, guid: af004838f024f4248bcad3931e6c9538,
+        type: 2}
     - target: {fileID: 2963965915967881485, guid: edd308d06183af244b998cc4ea15ceca,
         type: 3}
       propertyPath: m_LocalPosition.x

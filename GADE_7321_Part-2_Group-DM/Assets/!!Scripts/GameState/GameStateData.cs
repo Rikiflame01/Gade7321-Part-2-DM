@@ -12,6 +12,8 @@ public class GameStateData : ScriptableObject
     public int currentBoard;
 
     public Difficulty difficulty;
+
+    public bool aiPlaying;
 }
 
 public enum Player

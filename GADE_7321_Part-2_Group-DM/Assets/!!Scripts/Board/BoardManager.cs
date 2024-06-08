@@ -85,7 +85,6 @@ public class BoardManager : MonoBehaviour
 
         if (moveData.AITurn)
         {
-
             currentBoardMove.playerTurn = _playerTurn.ToString();
             StartCoroutine(AIPlacePieceDelayed(currentBoardMove));
         }

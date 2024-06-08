@@ -9,6 +9,7 @@ public class AIEasyHandler : MonoBehaviour
     public UnityEvent<MoveData> onAIPlacePiece;
     
     [SerializeField] private PieceCaptureHandler captureHandler;
+    [SerializeField] private GameStateData gameStateData;
     
     public void PlacePiece(BoardMove boardPiece)
     {
@@ -53,6 +54,8 @@ public class AIEasyHandler : MonoBehaviour
             
         };
         onAIPlacePiece?.Invoke(boardData);
+        gameStateData.aiPlaying = false;
+
     }
 
     private bool IsBoardFull(string[,] board)
@@ -117,7 +120,7 @@ public class AIEasyHandler : MonoBehaviour
                     diagonalPositions.Add(new Vector2(newX, newY));
                 }
 
-                if (captureHandler.CheckCapturesOnly(diagonalPositions, board, colour))
+                if (captureHandler.CheckCapturesOnly(diagonalPositions, board, colour, true))
                 {
                     return true;
                 }
