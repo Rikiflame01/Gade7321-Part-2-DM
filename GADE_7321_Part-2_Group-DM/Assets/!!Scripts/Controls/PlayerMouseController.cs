@@ -11,12 +11,14 @@ public class PlayerMouseController : MonoBehaviour
 {
     [SerializeField] private LayerMask _boardPiece;
     [SerializeField] private GameStateData gameStateData;
+    [SerializeField] private bool aiGameplay;
     
     private DefaultInputActions _playerInput;
     private Camera _mainCam;
 
     public UnityEvent<Vector3, BoardPiece, Vector3> OnBoardPieceClicked;
     public UnityEvent<MoveData> onBoardPiecePlacedVAI;
+    
 
     private void Awake()
     {
@@ -45,7 +47,7 @@ public class PlayerMouseController : MonoBehaviour
     
     void OnMouseClick(InputAction.CallbackContext obj)
     {
-        if(gameStateData.aiPlaying) return;
+        if(gameStateData.aiPlaying && aiGameplay) return;
         Debug.Log("Mouse Click");
         RaycastHit hit;
 
@@ -66,7 +68,7 @@ public class PlayerMouseController : MonoBehaviour
 
     private void SubmitMoveAgainstAI(FaceBoard piece)
     {
-        if(gameStateData.aiPlaying) return;
+        if(gameStateData.aiPlaying && aiGameplay) return;
         
         MoveData moveData = new MoveData()
         {

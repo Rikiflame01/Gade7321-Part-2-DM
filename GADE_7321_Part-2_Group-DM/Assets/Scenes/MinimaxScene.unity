@@ -1811,6 +1811,11 @@ PrefabInstance:
       propertyPath: onPieceTaken.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 7013647415187498439, guid: edd308d06183af244b998cc4ea15ceca,
+        type: 3}
+      propertyPath: aiGameplay
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7180954977076519388, guid: edd308d06183af244b998cc4ea15ceca,
         type: 3}
       propertyPath: m_IsActive
@@ -3998,6 +4003,7 @@ MonoBehaviour:
   minimax: {fileID: 1415432039}
   captureHandler: {fileID: 680595295}
   aiColour: Red
+  gameStateData: {fileID: 0}
   miniMaxDepth: 3
   onAIPlacePiece:
     m_PersistentCalls:

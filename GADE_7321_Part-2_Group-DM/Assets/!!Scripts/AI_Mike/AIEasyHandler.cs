@@ -10,6 +10,8 @@ public class AIEasyHandler : MonoBehaviour
     
     [SerializeField] private PieceCaptureHandler captureHandler;
     [SerializeField] private GameStateData gameStateData;
+
+    public UnityEvent onFaceIsFull;
     
     public void PlacePiece(BoardMove boardPiece)
     {
@@ -22,6 +24,7 @@ public class AIEasyHandler : MonoBehaviour
 
         if (IsBoardFull(board))
         {
+            onFaceIsFull?.Invoke();
             return;
         }
 
