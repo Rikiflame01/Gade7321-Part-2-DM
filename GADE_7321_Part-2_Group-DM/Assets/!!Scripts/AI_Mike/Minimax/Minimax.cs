@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,20 +5,20 @@ public class Minimax : MonoBehaviour
 {
     [SerializeField] private UtilityFunctionManager utilityFunction;
     [SerializeField] private PieceCaptureHandler captureHandler;
-    
-    public (float, float) MinimaxFunction(string[,] board, int depth, bool isMaximizingPlayer, string currentPlayerColor)
+
+    public (float, int) MinimaxFunction(string[,] board, int depth, bool isMaximizingPlayer, string currentPlayerColor)
     {
         string opponentColor = currentPlayerColor == "Red" ? "Blue" : "Red";
 
         if (depth == 0 || IsGameOver(board))
         {
-            return (utilityFunction.UtilityFunction(board, currentPlayerColor), -1); // return utility value and invalid move
+            return (utilityFunction.UtilityFunction(board, currentPlayerColor, -1, -1), -1); // return utility value and invalid move
         }
 
         if (isMaximizingPlayer)
         {
-            float maxEval = int.MinValue;
-            float bestMove = -1;
+            float maxEval = float.MinValue;
+            int bestMove = -1;
             foreach (var move in GetAllPossibleMoves(board, currentPlayerColor))
             {
                 string[,] newBoard = ApplyMove(board, move, currentPlayerColor);
@@ -34,8 +33,8 @@ public class Minimax : MonoBehaviour
         }
         else
         {
-            float minEval = int.MaxValue;
-            float bestMove = -1;
+            float minEval = float.MaxValue;
+            int bestMove = -1;
             foreach (var move in GetAllPossibleMoves(board, opponentColor))
             {
                 string[,] newBoard = ApplyMove(board, move, opponentColor);

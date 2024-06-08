@@ -138,7 +138,7 @@ public class PieceCaptureHandler : MonoBehaviour
         return false;
     }
 
-    private CaptureData CapturePieces(List<Vector2> diagonalPositions, string[,] board, string colour)
+    public CaptureData CapturePieces(List<Vector2> diagonalPositions, string[,] board, string colour)
     {
         int size = diagonalPositions.Count;
         CaptureData answer = new CaptureData();
