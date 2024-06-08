@@ -25,7 +25,7 @@ public class MinimaxHandler : MonoBehaviour
         }
 
         // Call the Minimax function to get the best move
-        var result = minimax.MinimaxFunction(board, miniMaxDepth, true, aiColour);
+        var result = minimax.MinimaxFunction(board, miniMaxDepth, true, aiColour, float.MinValue, float.MaxValue);
         int bestMove = result.Item2;
 
         if (bestMove != -1)

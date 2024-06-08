@@ -6,7 +6,7 @@ public class Minimax : MonoBehaviour
     [SerializeField] private UtilityFunctionManager utilityFunction;
     [SerializeField] private PieceCaptureHandler captureHandler;
 
-    public (float, int) MinimaxFunction(string[,] board, int depth, bool isMaximizingPlayer, string currentPlayerColor)
+    public (float, int) MinimaxFunction(string[,] board, int depth, bool isMaximizingPlayer, string currentPlayerColor, float alpha, float beta)
     {
         string opponentColor = currentPlayerColor == "Red" ? "Blue" : "Red";
 
@@ -22,11 +22,16 @@ public class Minimax : MonoBehaviour
             foreach (var move in GetAllPossibleMoves(board, currentPlayerColor))
             {
                 string[,] newBoard = ApplyMove(board, move, currentPlayerColor);
-                float eval = MinimaxFunction(newBoard, depth - 1, false, currentPlayerColor).Item1;
+                float eval = MinimaxFunction(newBoard, depth - 1, false, currentPlayerColor, alpha, beta).Item1;
                 if (eval > maxEval)
                 {
                     maxEval = eval;
                     bestMove = move;
+                }
+                alpha = Mathf.Max(alpha, eval);
+                if (beta <= alpha)
+                {
+                    break; // beta cut-off
                 }
             }
             return (maxEval, bestMove);
@@ -38,11 +43,16 @@ public class Minimax : MonoBehaviour
             foreach (var move in GetAllPossibleMoves(board, opponentColor))
             {
                 string[,] newBoard = ApplyMove(board, move, opponentColor);
-                float eval = MinimaxFunction(newBoard, depth - 1, true, currentPlayerColor).Item1;
+                float eval = MinimaxFunction(newBoard, depth - 1, true, currentPlayerColor, alpha, beta).Item1;
                 if (eval < minEval)
                 {
                     minEval = eval;
                     bestMove = move;
+                }
+                beta = Mathf.Min(beta, eval);
+                if (beta <= alpha)
+                {
+                    break; // alpha cut-off
                 }
             }
             return (minEval, bestMove);
