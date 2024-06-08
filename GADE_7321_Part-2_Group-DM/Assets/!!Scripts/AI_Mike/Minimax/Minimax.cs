@@ -6,19 +6,19 @@ public class Minimax : MonoBehaviour
     [SerializeField] private UtilityFunctionManager utilityFunction;
     [SerializeField] private PieceCaptureHandler captureHandler;
 
-    public (float, int) MinimaxFunction(string[,] board, int depth, bool isMaximizingPlayer, string currentPlayerColor, float alpha, float beta)
+    public (float, Vector2) MinimaxFunction(string[,] board, int depth, bool isMaximizingPlayer, string currentPlayerColor, float alpha, float beta)
     {
         string opponentColor = currentPlayerColor == "Red" ? "Blue" : "Red";
 
         if (depth == 0 || IsGameOver(board))
         {
-            return (utilityFunction.UtilityFunction(board, currentPlayerColor, -1, -1), -1); // return utility value and invalid move
+            return (utilityFunction.UtilityFunction(board, currentPlayerColor, -1, -1), Vector2.negativeInfinity); // return utility value and invalid move
         }
 
         if (isMaximizingPlayer)
         {
             float maxEval = float.MinValue;
-            int bestMove = -1;
+            Vector2 bestMove = Vector2.negativeInfinity;
             foreach (var move in GetAllPossibleMoves(board, currentPlayerColor))
             {
                 string[,] newBoard = ApplyMove(board, move, currentPlayerColor);
@@ -39,7 +39,7 @@ public class Minimax : MonoBehaviour
         else
         {
             float minEval = float.MaxValue;
-            int bestMove = -1;
+            Vector2 bestMove = Vector2.negativeInfinity;
             foreach (var move in GetAllPossibleMoves(board, opponentColor))
             {
                 string[,] newBoard = ApplyMove(board, move, opponentColor);
@@ -59,9 +59,9 @@ public class Minimax : MonoBehaviour
         }
     }
 
-    private List<int> GetAllPossibleMoves(string[,] board, string currentPlayerColor)
+    private List<Vector2> GetAllPossibleMoves(string[,] board, string currentPlayerColor)
     {
-        List<int> possibleMoves = new List<int>();
+        List<Vector2> possibleMoves = new List<Vector2>();
         int size = board.GetLength(0);
         for (int i = 0; i < size; i++)
         {
@@ -69,22 +69,21 @@ public class Minimax : MonoBehaviour
             {
                 if (board[i, j] == "_")
                 {
-                    possibleMoves.Add(i * size + j); // Convert (i, j) to a single index
+                    possibleMoves.Add(new Vector2(i, j));
                 }
             }
         }
         return possibleMoves;
     }
 
-    private string[,] ApplyMove(string[,] board, int move, string currentPlayerColor)
+    private string[,] ApplyMove(string[,] board, Vector2 move, string currentPlayerColor)
     {
-        int size = board.GetLength(0);
-        int x = move / size;
-        int y = move % size;
+        int x = (int)move.x;
+        int y = (int)move.y;
 
         string[,] newBoard = (string[,])board.Clone();
         newBoard[x, y] = currentPlayerColor;
-        //captureHandler.GetDiagonals(newBoard, x, y, currentPlayerColor); // Update the board with captured pieces
+       // captureHandler.GetDiagonals(newBoard, x, y, currentPlayerColor); // Update the board with captured pieces
         return newBoard;
     }
 

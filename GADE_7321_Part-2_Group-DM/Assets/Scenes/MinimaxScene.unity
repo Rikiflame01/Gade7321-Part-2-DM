@@ -3998,7 +3998,7 @@ MonoBehaviour:
   minimax: {fileID: 1415432039}
   captureHandler: {fileID: 680595295}
   aiColour: Red
-  miniMaxDepth: 10
+  miniMaxDepth: 3
   onAIPlacePiece:
     m_PersistentCalls:
       m_Calls:

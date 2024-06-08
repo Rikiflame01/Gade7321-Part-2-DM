@@ -10,8 +10,8 @@ public class MinimaxHandler : MonoBehaviour
     [SerializeField] private PieceCaptureHandler captureHandler;
     [SerializeField] private string aiColour = "Red";
 
-    [Header("Settings")] public int miniMaxDepth = 3;
-    
+    [Header("Settings")] public int miniMaxDepth = 4;
+
     public UnityEvent<MoveData> onAIPlacePiece;
 
     public void PlacePiece(BoardMove boardPiece)
@@ -26,13 +26,12 @@ public class MinimaxHandler : MonoBehaviour
 
         // Call the Minimax function to get the best move
         var result = minimax.MinimaxFunction(board, miniMaxDepth, true, aiColour, float.MinValue, float.MaxValue);
-        int bestMove = result.Item2;
+        Vector2 bestMove = result.Item2;
 
-        if (bestMove != -1)
+        if (bestMove != Vector2.negativeInfinity)
         {
-            int size = board.GetLength(0);
-            int x = bestMove / size;
-            int y = bestMove % size;
+            int x = (int)bestMove.x;
+            int y = (int)bestMove.y;
             Debug.Log($"AI performing move at ({x}, {y})");
             SubmitAIMove(new Vector2(x, y));
         }
@@ -41,7 +40,7 @@ public class MinimaxHandler : MonoBehaviour
             Debug.LogWarning("No valid moves found by AI.");
         }
     }
-    
+
     private void SubmitAIMove(Vector2 move)
     {
         FaceBoard faceBoard = captureHandler.GetPiece((int)move.x, (int)move.y);
@@ -51,7 +50,6 @@ public class MinimaxHandler : MonoBehaviour
             Piece = faceBoard.GetBoardPiece(),
             Coordinate = faceBoard.Coordinates,
             AITurn = false
-            
         };
         onAIPlacePiece?.Invoke(boardData);
     }
