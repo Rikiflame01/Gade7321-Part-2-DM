@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class UtilityFunctionManager : MonoBehaviour
 {
+
+    [SerializeField] private PieceCaptureHandler captureHandler;
+    
     public float UtilityFunction(string[,] board, string currentPlayerColour) //Add a default value
     {
         const float w1 = 1, w2 = 0.6f, w3 = 1, w4 = 0.7f, w5 = 1;
@@ -41,6 +44,8 @@ public class UtilityFunctionManager : MonoBehaviour
 
     private int Vulnerability(string[,] board, string color)
     {
+        // bool vulnerable = HasTrap();
+        // if (vulnerable) return 100;
         //Use trapping for vulnerability of move
         //What is the best move for the opposite colour, so the AI won't move there
         return 0; // Placeholder
@@ -68,5 +73,35 @@ public class UtilityFunctionManager : MonoBehaviour
         // " 2 = high value
         //" 1 = moderate value
         return 0; // Placeholder
+    }
+    
+    private bool HasTrap(string[,] board, int x, int y, string colour)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            int dx = captureHandler.Directions[i, 0];
+            int dy = captureHandler.Directions[i, 1];
+
+            for (int direction = -1; direction <= 1; direction += 2)
+            {
+                List<Vector2> diagonalPositions = new List<Vector2>();
+                for (int j = 0; j < board.GetLength(0); j++)
+                {
+                    int newX = x + direction * dx * j;
+                    int newY = y + direction * dy * j;
+
+                    if (!captureHandler.IsInBounds(newX, newY, board.GetLength(0)))
+                        break;
+
+                    diagonalPositions.Add(new Vector2(newX, newY));
+                }
+
+                if (captureHandler.CheckTrapsOnly(diagonalPositions, board, colour))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -88,7 +88,7 @@ public class AIEasyHandler : MonoBehaviour
         {
             string[,] simulatedBoard = (string[,])board.Clone();
             simulatedBoard[(int)move.x, (int)move.y] = currentPlayerColor;
-            if (HasCapture(simulatedBoard, (int)move.x, (int)move.y))
+            if (HasCapture(simulatedBoard, (int)move.x, (int)move.y, currentPlayerColor))
             {
                 return move;
             }
@@ -96,7 +96,7 @@ public class AIEasyHandler : MonoBehaviour
         return new Vector2( 5, 5);
     }
     
-    private bool HasCapture(string[,] board, int x, int y)
+    private bool HasCapture(string[,] board, int x, int y, string colour)
     {
         for (int i = 0; i < 4; i++)
         {
@@ -117,7 +117,7 @@ public class AIEasyHandler : MonoBehaviour
                     diagonalPositions.Add(new Vector2(newX, newY));
                 }
 
-                if (captureHandler.CheckCapturesOnly(diagonalPositions, board))
+                if (captureHandler.CheckCapturesOnly(diagonalPositions, board, colour))
                 {
                     return true;
                 }
