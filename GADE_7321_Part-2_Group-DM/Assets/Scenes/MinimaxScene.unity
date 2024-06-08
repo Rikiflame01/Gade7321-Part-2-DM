@@ -4003,8 +4003,8 @@ MonoBehaviour:
   minimax: {fileID: 1415432039}
   captureHandler: {fileID: 680595295}
   aiColour: Red
-  gameStateData: {fileID: 0}
-  miniMaxDepth: 3
+  gameStateData: {fileID: 11400000, guid: af004838f024f4248bcad3931e6c9538, type: 2}
+  miniMaxDepth: 4
   onAIPlacePiece:
     m_PersistentCalls:
       m_Calls:
