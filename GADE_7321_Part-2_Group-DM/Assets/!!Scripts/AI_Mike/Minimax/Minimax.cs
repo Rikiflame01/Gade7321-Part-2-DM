@@ -29,6 +29,10 @@ public class Minimax : MonoBehaviour
                     bestMove = move;
                 }
                 alpha = Mathf.Max(alpha, eval);
+                if (beta <= alpha)
+                {
+                    break; // beta cut-off
+                }
             }
             return (maxEval, bestMove);
         }
@@ -46,6 +50,10 @@ public class Minimax : MonoBehaviour
                     bestMove = move;
                 }
                 beta = Mathf.Min(beta, eval);
+                if (beta <= alpha)
+                {
+                    break; // alpha cut-off
+                }
             }
             return (minEval, bestMove);
         }
