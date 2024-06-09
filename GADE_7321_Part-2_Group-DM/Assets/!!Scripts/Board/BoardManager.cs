@@ -16,6 +16,8 @@ public class BoardManager : MonoBehaviour
     
     [Header("Settings: ")]
     [SerializeField] private int gameEndAmount = 120;
+
+    [SerializeField] private float aiMoveWaitTime = 2f;
     
     [Space]
     [Header("AI Gameplay")]
@@ -96,7 +98,7 @@ public class BoardManager : MonoBehaviour
     
     private IEnumerator AIPlacePieceDelayed(BoardMove boardData)
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(aiMoveWaitTime);
 
         onAIMove?.Invoke(boardData);
         
