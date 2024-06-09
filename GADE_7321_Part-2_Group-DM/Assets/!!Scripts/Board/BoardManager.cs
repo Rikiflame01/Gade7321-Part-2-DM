@@ -56,6 +56,7 @@ public class BoardManager : MonoBehaviour
 
     private void Start()
     {
+        gameStateData.aiPlaying = false;
         _playerTurn = gameStateData.playerTurn;
     }
 

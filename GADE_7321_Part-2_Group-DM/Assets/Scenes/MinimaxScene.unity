@@ -1714,7 +1714,7 @@ PrefabInstance:
     - target: {fileID: 3687889544009828973, guid: edd308d06183af244b998cc4ea15ceca,
         type: 3}
       propertyPath: aiMoveWaitTime
-      value: 0.5
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3687889544009828973, guid: edd308d06183af244b998cc4ea15ceca,
         type: 3}

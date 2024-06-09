@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a89ab018df7c046b1b35c33340c644, type: 3}
   m_Name: GameState
   m_EditorClassIdentifier: 
-  playerTurn: 0
-  numRedPieces: 10
-  numBluePieces: 10
+  playerTurn: 1
+  numRedPieces: 12
+  numBluePieces: 13
   currentBoard: 0
   difficulty: 0
-  aiPlaying: 0
+  aiPlaying: 1

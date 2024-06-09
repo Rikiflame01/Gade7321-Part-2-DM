@@ -33,12 +33,21 @@ public class UtilityFunctionManager : MonoBehaviour
 
     private int DiagonalControl(string[,] board, string colour)
     {
+        int count = 0;
+        
         bool isHighDiagonalControl =
             board[0, 0] == colour || board[0, 4] == colour || board[4, 0] == colour || board[4, 4] == colour;
+        if (isHighDiagonalControl) count += 200;
+        
+        if(board[0,0] == colour && board[4,4] == colour) count += 300; 
+        if(board[4,0] == colour && board[0,4] == colour) count += 300; 
+        
+        if (board[0, 1] == colour && board[3, 4] == colour) count += 80;
+        if (board[0, 3] == colour && board[3,0] == colour) count += 80;
+        if (board[4, 3] == colour && board[1,0] == colour) count += 80;
+        if (board[4, 1] == colour && board[1,4] == colour) count += 80;
 
-        if (isHighDiagonalControl) return 100;
-
-        return 0;
+        return count;
     }
 
     private int Vulnerability(string[,] board, string colour)
@@ -71,6 +80,16 @@ public class UtilityFunctionManager : MonoBehaviour
     private int StrategicPositions(string[,] board, string colour)
     {
         int count = 0;
+        
+        if(board[0,0] == colour) count += 10; 
+        if(board[4,0]  == colour) count += 10; 
+        if(board[0,4]  == colour) count += 10; 
+        if(board[4,4]  == colour) count += 10; 
+        
+        if (board[0, 1] == colour) count += 5;
+        if (board[0, 3]  == colour) count += 5;
+        if (board[4, 3] == colour) count += 5;
+        if (board[4, 1] == colour) count += 5;
 
         for (int i = 0; i < 5; i++)
         {
@@ -80,7 +99,7 @@ public class UtilityFunctionManager : MonoBehaviour
             if (board[i, 4] == colour) count++;
         }
 
-        return count * 1; // Example multiplier for edge pieces
+        return count * 5;
     }
 
     private int HighValuePosition(string[,] board, string color)
