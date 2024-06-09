@@ -3979,6 +3979,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   captureHandler: {fileID: 680595295}
+  weightPieceCount: 1
+  weightMobility: 1.5
+  weightCornerControl: 3
+  weightEdgeStability: 1.2
+  weightPositional: 2
+  weightCapturingPotential: 2.5
 --- !u!114 &1415432039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4009,7 +4015,7 @@ MonoBehaviour:
   captureHandler: {fileID: 680595295}
   aiColour: Red
   gameStateData: {fileID: 11400000, guid: af004838f024f4248bcad3931e6c9538, type: 2}
-  miniMaxDepth: 4
+  miniMaxDepth: 9
   onAIPlacePiece:
     m_PersistentCalls:
       m_Calls:
