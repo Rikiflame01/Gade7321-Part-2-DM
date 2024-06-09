@@ -29,7 +29,7 @@ public class BoardTracker : MonoBehaviour
 
     IEnumerator ShowFrontBoardOnly()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         for (int i = 0; i < boardFaces.Length; i++)
         {
             if(i == 0) continue;

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: GameState
   m_EditorClassIdentifier: 
   playerTurn: 1
-  numRedPieces: 12
-  numBluePieces: 13
-  currentBoard: 0
+  numRedPieces: 41
+  numBluePieces: 42
+  currentBoard: 4
   difficulty: 0
-  aiPlaying: 1
+  aiPlaying: 0

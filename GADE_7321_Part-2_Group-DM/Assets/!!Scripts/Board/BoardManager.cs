@@ -38,6 +38,13 @@ public class BoardManager : MonoBehaviour
     private string[,] boardFive = new string[5, 5]; // Top of one
     private string[,] boardSix = new string[5, 5]; //Bottom of one
 
+    public string[,] BoardOne => boardOne;
+    public string[,] BoardTwo => boardTwo;
+    public string[,] BoardThree => boardThree;
+    public string[,] BoardFour => boardFour;
+    public string[,] BoardFive => boardFive;
+    public string[,] BoardSix => boardSix;
+
     public UnityEvent<BoardMove> OnPiecePlaced;
     public UnityEvent<int> PiecePlaced;
     public UnityEvent OnEndGame;
@@ -56,6 +63,15 @@ public class BoardManager : MonoBehaviour
 
     private void Start()
     {
+        if (AIGameplay)
+        {
+            currentBoardMove = new BoardMove
+            {
+                board = boardOne,
+                playerTurn = "Blue"
+            };
+        }
+        
         gameStateData.aiPlaying = false;
         _playerTurn = gameStateData.playerTurn;
     }
@@ -64,6 +80,8 @@ public class BoardManager : MonoBehaviour
     {
         if (boardPiece.IsPieceOccupied() || isGameEnd)
         {
+            Debug.LogWarning("Piece Occupied");
+            if(gameStateData.aiPlaying) StartCoroutine(AIPlacePieceDelayed(currentBoardMove));
             return;
         }
         
@@ -82,7 +100,7 @@ public class BoardManager : MonoBehaviour
         }
     }
     
-    public void TryPlacePieceAI(MoveData moveData) //Subscription to unity event 
+    public void TryPlacePieceAI(MoveData moveData) //Subscription to unity event for AI
     {
         if(!AIGameplay) return;
 
@@ -96,12 +114,34 @@ public class BoardManager : MonoBehaviour
             TryPlacePiece(moveData.Position, moveData.Piece, moveData.Coordinate);
         }
     }
+
+    public void HandleBoardFull(int board) //Perform AI move on new board if previous board was full
+    {
+        BoardMove newBoardMove = new();
+        switch (board)
+        {
+            case 0: newBoardMove.board = boardOne;
+                break;
+            case 1: newBoardMove.board = boardTwo;
+                break;
+            case 2: newBoardMove.board = boardThree;
+                break;
+            case 3: newBoardMove.board = boardFour;
+                break;
+            case 4: newBoardMove.board = boardFive;
+                break;
+            case 5: newBoardMove.board = boardSix;
+                break;
+        }
+
+        StartCoroutine(AIPlacePieceDelayed(newBoardMove));
+    }
     
     private IEnumerator AIPlacePieceDelayed(BoardMove boardData)
     {
-        yield return new WaitForSeconds(aiMoveWaitTime);
+        yield return new WaitForSeconds(aiMoveWaitTime); //Wait so player can see easy move
 
-        onAIMove?.Invoke(boardData);
+        onAIMove?.Invoke(boardData); //Perform AI move
         
         if (AIGameplay) _isAITurn = false;
     }
@@ -173,6 +213,7 @@ public class BoardManager : MonoBehaviour
         }
 
         currentBoardMove = move;
+        //Update game UI
         onCheckNumPieces?.Invoke(NumPieces(move.board, "Red"), NumPieces(move.board, "Blue"));
         
     }
@@ -204,7 +245,7 @@ public class BoardManager : MonoBehaviour
 
     #region Debugging
 
-    void ShowBoard(string[,] board)
+    void ShowBoard(string[,] board) //For debugging 2D boards
     {
         string debugBoard = "";
         Debug.Log($"Show current board: {gameStateData.currentBoard}");
@@ -261,7 +302,7 @@ public class BoardManager : MonoBehaviour
     #endregion
 
 
-    private int NumPieces(string[,] board, string colour)
+    private int NumPieces(string[,] board, string colour) //Getting number of each colour on the current board
     {
         int value = 0;
 

@@ -10,25 +10,20 @@ public class AIEasyHandler : MonoBehaviour
     
     [SerializeField] private PieceCaptureHandler captureHandler;
     [SerializeField] private GameStateData gameStateData;
-
-    public UnityEvent onFaceIsFull;
     
     public void PlacePiece(BoardMove boardPiece)
     {
         var board = boardPiece.board;
-        //FaceBoard faceBoard = null;
         
         Debug.Log("AI is placing piece");
-        
-        //Check if possible capture
 
         if (IsBoardFull(board))
         {
-            onFaceIsFull?.Invoke();
+            //Return if board full
             return;
         }
 
-        Vector2 captureMove = GetCaptureMove(board, boardPiece.playerTurn);
+        Vector2 captureMove = GetCaptureMove(board, boardPiece.playerTurn); //Check if capture possible
 
         if (captureMove != new Vector2(5, 5))
         {
@@ -39,13 +34,13 @@ public class AIEasyHandler : MonoBehaviour
 
         List<Vector2> possiblesMoves = GetAllPossibleMoves(board);
 
-        Vector2 randomMove = possiblesMoves[Random.Range(0, possiblesMoves.Count)];
+        Vector2 randomMove = possiblesMoves[Random.Range(0, possiblesMoves.Count)]; //Move randomly if no capture moves
         
-        Debug.Log($"Random Move at: {randomMove}, from {boardPiece.playerTurn}");
+        //Debug.Log($"Random Move at: {randomMove}, from {boardPiece.playerTurn}");
         SubmitAIMove(randomMove);
     }
 
-    private void SubmitAIMove(Vector2 move)
+    private void SubmitAIMove(Vector2 move) //Submit the move 
     {
         FaceBoard faceBoard = captureHandler.GetPiece((int)move.x, (int)move.y);
         MoveData boardData = new MoveData()
@@ -55,13 +50,19 @@ public class AIEasyHandler : MonoBehaviour
             Coordinate = faceBoard.Coordinates,
             AITurn = false
             
-        };
-        onAIPlacePiece?.Invoke(boardData);
-        gameStateData.aiPlaying = false;
+        }; //Create the move Data from move 
+        onAIPlacePiece?.Invoke(boardData); //Send move to board data
 
+        StartCoroutine(WaitForAI());
     }
 
-    private bool IsBoardFull(string[,] board)
+    IEnumerator WaitForAI()
+    {
+        yield return new WaitForSeconds(0.5f);
+        gameStateData.aiPlaying = false;
+    }
+
+    private bool IsBoardFull(string[,] board) // Check if board full
     {
         foreach (var piece in board)
         {

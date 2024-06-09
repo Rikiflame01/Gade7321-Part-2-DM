@@ -38,8 +38,7 @@ public class PieceCaptureHandler : MonoBehaviour
         string[,] board = boardMove.board;
         int x = boardMove.x;
         int y = boardMove.y;
-
-        Debug.Log($"CheckDiagonalTake called at ({x}, {y})");
+        
         GetDiagonals(board, x, y, boardMove.playerTurn, true);
     }
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class NewPlayerCameraController : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class NewPlayerCameraController : MonoBehaviour
     private float currentRotationX = 0f;
     private float currentRotationY = 0f;
     private bool isCursorLocked = false;
+
+    public UnityEvent onBoardFaceChange;
 
     void Start()
     {
@@ -80,6 +83,7 @@ public class NewPlayerCameraController : MonoBehaviour
         currentRotationX += rotationStep * direction;
         currentRotationX = Mathf.Clamp(currentRotationX, -90f, 90f);
         UpdateCameraPosition(gridManager.GridCenter);
+        onBoardFaceChange?.Invoke();
     }
 
     public void RotateViewHorizontal(int direction)
@@ -87,6 +91,7 @@ public class NewPlayerCameraController : MonoBehaviour
         // Rotate left or right
         currentRotationY += rotationStep * direction;
         UpdateCameraPosition(gridManager.GridCenter);
+        onBoardFaceChange?.Invoke();
     }
 
     private void InitializeCameraPosition()

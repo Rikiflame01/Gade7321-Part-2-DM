@@ -47,7 +47,10 @@ public class PlayerMouseController : MonoBehaviour
     
     void OnMouseClick(InputAction.CallbackContext obj)
     {
+        //Check for handling player trying to move when AI turn
         if(gameStateData.aiPlaying && aiGameplay) return;
+        if(gameStateData.playerTurn == Player.Red && aiGameplay) return; 
+        
         Debug.Log("Mouse Click");
         RaycastHit hit;
 
@@ -78,8 +81,8 @@ public class PlayerMouseController : MonoBehaviour
             AITurn = true
         };
         
-        onBoardPiecePlacedVAI?.Invoke(moveData);
-        gameStateData.aiPlaying = true;
+        onBoardPiecePlacedVAI?.Invoke(moveData); //Different event fire for AI move
+        gameStateData.aiPlaying = true; //After move AI turn
     }
     
 }
