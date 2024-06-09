@@ -58,5 +58,30 @@ public class FaceFullHandler : MonoBehaviour
         if(!gameStateData.aiPlaying) yield return null;
         onAIMove?.Invoke(gameStateData.currentBoard);
     }
+
+    public (int, int) GetFullAmountOfPieces()
+    {
+        int redPieces = 0;
+        int bluePieces = 0;
+        
+        List<string[,]> boards = new List<string[,]>
+        {
+            boardManager.BoardOne,
+            boardManager.BoardTwo,
+            boardManager.BoardThree,
+            boardManager.BoardFour,
+        };
+
+        foreach (var board in boards)
+        {
+            foreach (var piece in board)
+            {
+                if (piece == "Red") redPieces++;
+                if (piece == "Blue") bluePieces++;
+            }
+        }
+
+        return (redPieces, bluePieces);
+    }
     
 }

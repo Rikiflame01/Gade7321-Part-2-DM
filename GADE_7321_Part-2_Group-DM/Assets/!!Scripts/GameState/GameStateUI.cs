@@ -9,6 +9,7 @@ public class GameStateUI : MonoBehaviour
 {
     [Header("Game State")] public GameStateData gameStateData;
     [SerializeField] private PlayerInfo playerInfo;
+    [SerializeField] private FaceFullHandler faceFullHandler;
     
     [Header("UI References: ")]
     public TMP_Text bluePiecesText;
@@ -17,6 +18,9 @@ public class GameStateUI : MonoBehaviour
     public TMP_Text turnText;
     public Image colourIndicator;
     public GameObject endGameScreen;
+    public TMP_Text endRedPiecesText;
+    public TMP_Text endBluePiecesText;
+    public TMP_Text endWinnerText;
 
     private string firstPlayerName = "";
     
@@ -71,6 +75,29 @@ public class GameStateUI : MonoBehaviour
     public void ReturnHome()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void ShowEndGameScreen()
+    {
+         int redPieces = faceFullHandler.GetFullAmountOfPieces().Item1;
+         int bluePieces = faceFullHandler.GetFullAmountOfPieces().Item2;
+
+         endRedPiecesText.text = $"Red Pieces: {redPieces}";
+         endBluePiecesText.text = $"Blue Pieces: {bluePieces}";
+
+         if (redPieces > bluePieces)
+         {
+             endWinnerText.text = "Winner Red";
+         }else if (redPieces == bluePieces)
+         {
+             endWinnerText.text = "Draw";
+         }
+         else
+         {
+             endWinnerText.text = "Winner Blue";
+         }
+         
+         endGameScreen.SetActive(true);
     }
     
 }

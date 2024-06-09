@@ -54,6 +54,12 @@ public class MinimaxHandler : MonoBehaviour
             AITurn = false
         };
         onAIPlacePiece?.Invoke(boardData);
+        StartCoroutine(WaitForAI());
+    }
+
+    IEnumerator WaitForAI()
+    {
+        yield return new WaitForSeconds(0.5f);
         gameStateData.aiPlaying = false;
     }
 
