@@ -82,9 +82,7 @@ public class PlayerInputManager : MonoBehaviour
             Debug.LogError("PlayerInfo is not assigned.");
             return;
         }
-
-        playerInfo.player1.playerName = difficulty + "AI";
-        playerInfo.player2.playerName = "Player";
+        
 
         if (Random.value > 0.5f)
         {
@@ -96,6 +94,19 @@ public class PlayerInputManager : MonoBehaviour
             playerInfo.player1.playerColour = "Blue";
             playerInfo.player2.playerColour = "Red";
         }
+
+        if (playerInfo.player1.playerColour == "Red")
+        {
+            playerInfo.player1.playerName = difficulty + "AI";
+            playerInfo.player2.playerName = "Player";
+        }
+        else
+        {
+            playerInfo.player2.playerName = difficulty + "AI";
+            playerInfo.player1.playerName = "Player";
+        }
+
+
     }
 
     public void EnterEasy()
