@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MinimaxScene.unity
     guid: c97b9e28d7140ef4b82302dad837efc7
+  - enabled: 1
+    path: Assets/Scenes/Medium-MinimaxScene.unity
+    guid: 2bd95e2196976a64f9da6b46d37577e4
   m_configObjects: {}

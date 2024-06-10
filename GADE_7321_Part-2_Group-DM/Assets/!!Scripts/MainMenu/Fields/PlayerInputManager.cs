@@ -86,7 +86,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         gameData.difficulty = Difficulty.Medium;
         EnterPlayerInfoAI("Medium");
-        SceneManager.LoadScene("MinimaxScene");
+        SceneManager.LoadScene("Medium-MinimaxScene");
     }
 
     public void EnterDifficultScne()
