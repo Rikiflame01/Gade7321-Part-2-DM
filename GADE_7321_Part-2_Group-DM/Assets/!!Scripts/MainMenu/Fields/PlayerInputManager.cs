@@ -100,4 +100,9 @@ public class PlayerInputManager : MonoBehaviour
     {
         submitButton.onClick.RemoveListener(SubmitNamesAndRandomizeColors);
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
