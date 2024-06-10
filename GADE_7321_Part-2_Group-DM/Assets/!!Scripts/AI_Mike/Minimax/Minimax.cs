@@ -25,13 +25,13 @@ public class Minimax : MonoBehaviour
     /// <param name="board">The game board.</param>
     /// <param name="depth">The search depth.</param>
     /// <param name="isMaximizingPlayer">Whether the current player is maximizing or minimizing.</param>
-    /// <param name="currentPlayerColour">The current player's color.</param>
+    /// <param name="currentPlayerColour">The current player's colour.</param>
     /// <param name="alpha">Alpha value for pruning.</param>
     /// <param name="beta">Beta value for pruning.</param>
     /// <returns>The best evaluation score and move.</returns>
     public (float, Vector2) MinimaxFunction(string[,] board, int depth, bool isMaximizingPlayer, string currentPlayerColour, float alpha, float beta)
     {
-        string opponentColor = currentPlayerColour == "Red" ? "Blue" : "Red";
+        string opponentColour = currentPlayerColour == "Red" ? "Blue" : "Red";
 
         if (depth == 0 || IsGameOver(board))
         {
@@ -147,7 +147,7 @@ public class Minimax : MonoBehaviour
     /// </summary>
     /// <param name="board">The game board.</param>
     /// <param name="move">The move to apply.</param>
-    /// <param name="currentPlayerColour">The current player's color.</param>
+    /// <param name="currentPlayerColour">The current player's Colour.</param>
     /// <returns>The new board state after the move.</returns>
     private string[,] ApplyMove(string[,] board, Vector2 move, string currentPlayerColour)
     {

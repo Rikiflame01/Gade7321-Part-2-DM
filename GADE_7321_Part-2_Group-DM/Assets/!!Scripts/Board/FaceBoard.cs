@@ -108,7 +108,7 @@ public class FaceBoard : MonoBehaviour
         //
         // if (Physics.Raycast(transform.position, transform.right, out hit, 2, layerMask)) //
         // {
-        //     Debug.DrawRay(transform.position, transform.right * 2f, Color.red);
+        //     Debug.DrawRay(transform.position, transform.right * 2f, colour.red);
         //     if (hit.transform.TryGetComponent<BoardPiece>(out BoardPiece piece))
         //     {
         //         piece.ChangePieceColour(blue);
