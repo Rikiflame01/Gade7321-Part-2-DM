@@ -488,7 +488,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 230840840}
         m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
-        m_MethodName: EnterDifficultScne
+        m_MethodName: EnterDifficultScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
