@@ -40,7 +40,6 @@ public class GridManager : MonoBehaviour
 
     void CalculateCenter()
     {
-        //Get centre for camera
         GridCenter = new Vector3((width - 1) * spacing / 2, (height - 1) * -spacing / 2, (depth - 1) * spacing / 2);
     }
 }
