@@ -32,6 +32,7 @@ public class AIEasyHandler : MonoBehaviour
             return;
         }
 
+        //Else get all possible moves and move randomly
         List<Vector2> possiblesMoves = GetAllPossibleMoves(board);
 
         Vector2 randomMove = possiblesMoves[Random.Range(0, possiblesMoves.Count)]; //Move randomly if no capture moves
@@ -56,7 +57,7 @@ public class AIEasyHandler : MonoBehaviour
         StartCoroutine(WaitForAI());
     }
 
-    IEnumerator WaitForAI()
+    IEnumerator WaitForAI() //Wait for AI to process move
     {
         yield return new WaitForSeconds(0.5f);
         if (gameStateData != null) { 
@@ -73,7 +74,7 @@ public class AIEasyHandler : MonoBehaviour
         return true;
     }
     
-    private List<Vector2> GetAllPossibleMoves(string[,] board)
+    private List<Vector2> GetAllPossibleMoves(string[,] board) //Get all possible empty squares
     {
         List<Vector2> possibleMoves = new List<Vector2>();
         int size = board.GetLength(0);
@@ -105,7 +106,7 @@ public class AIEasyHandler : MonoBehaviour
         return new Vector2( 5, 5);
     }
     
-    private bool HasCapture(string[,] board, int x, int y, string colour)
+    private bool HasCapture(string[,] board, int x, int y, string colour) //Check if capture is available
     {
         for (int i = 0; i < 4; i++)
         {

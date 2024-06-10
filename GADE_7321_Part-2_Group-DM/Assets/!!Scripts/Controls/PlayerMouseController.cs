@@ -24,7 +24,7 @@ public class PlayerMouseController : MonoBehaviour
     {
         if (_playerInput == null)
         {
-            _playerInput = new DefaultInputActions();
+            _playerInput = new DefaultInputActions(); //Setup input
         }
     }
 
@@ -63,7 +63,7 @@ public class PlayerMouseController : MonoBehaviour
                 //Set up FaceBoard and boardPiece
                 piece.PopulateData(gameStateData); 
                 piece.BoardPiece.Coordinates = piece.Coordinates;
-                OnBoardPieceClicked?.Invoke(piece.SpawnPosition.position, piece.BoardPiece, piece.Coordinates);
+                OnBoardPieceClicked?.Invoke(piece.SpawnPosition.position, piece.BoardPiece, piece.Coordinates); //Move against player
                 SubmitMoveAgainstAI(piece);
             }
         }

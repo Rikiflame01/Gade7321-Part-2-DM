@@ -63,7 +63,7 @@ public class BoardManager : MonoBehaviour
 
     private void Start()
     {
-        if (AIGameplay)
+        if (AIGameplay) //Setup board Move for AI
         {
             currentBoardMove = new BoardMove
             {
@@ -146,7 +146,7 @@ public class BoardManager : MonoBehaviour
         if (AIGameplay) _isAITurn = false;
     }
 
-    void ChangePlayerTurn() 
+    void ChangePlayerTurn() //Change player turn
     {
         _playerTurn = _playerTurn == Player.Blue ? Player.Red : Player.Blue;
         gameStateData.playerTurn = _playerTurn;

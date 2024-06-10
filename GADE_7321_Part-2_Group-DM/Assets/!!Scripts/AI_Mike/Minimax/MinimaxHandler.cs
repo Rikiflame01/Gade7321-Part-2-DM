@@ -30,7 +30,7 @@ public class MinimaxHandler : MonoBehaviour
         Debug.Log($"Best Result= {result.Item1}");
         Vector2 bestMove = result.Item2;
 
-        if (bestMove != Vector2.negativeInfinity)
+        if (bestMove != Vector2.negativeInfinity) //Check if valid move
         {
             int x = (int)bestMove.x;
             int y = (int)bestMove.y;
@@ -43,7 +43,7 @@ public class MinimaxHandler : MonoBehaviour
         }
     }
 
-    private void SubmitAIMove(Vector2 move)
+    private void SubmitAIMove(Vector2 move) //Submit move to board manager
     {
         FaceBoard faceBoard = captureHandler.GetPiece((int)move.x, (int)move.y);
         MoveData boardData = new MoveData()
@@ -53,7 +53,7 @@ public class MinimaxHandler : MonoBehaviour
             Coordinate = faceBoard.Coordinates,
             AITurn = false
         };
-        onAIPlacePiece?.Invoke(boardData);
+        onAIPlacePiece?.Invoke(boardData); //Fire event
         StartCoroutine(WaitForAI());
     }
 
@@ -63,7 +63,7 @@ public class MinimaxHandler : MonoBehaviour
         gameStateData.aiPlaying = false;
     }
 
-    private bool IsBoardFull(string[,] board)
+    private bool IsBoardFull(string[,] board) //Check if current board full
     {
         foreach (var piece in board)
         {

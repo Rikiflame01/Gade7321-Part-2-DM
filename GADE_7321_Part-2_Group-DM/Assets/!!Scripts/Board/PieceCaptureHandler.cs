@@ -39,7 +39,7 @@ public class PieceCaptureHandler : MonoBehaviour
         int x = boardMove.x;
         int y = boardMove.y;
         
-        GetDiagonals(board, x, y, boardMove.playerTurn, true);
+        GetDiagonals(board, x, y, boardMove.playerTurn, true); //From BoardMove Get Diagonals
     }
 
     public void GetDiagonals(string[,] board, int x, int y, string colour, bool takePieces)
@@ -72,7 +72,7 @@ public class PieceCaptureHandler : MonoBehaviour
                 if (a.x == b.x)
                     return a.y.CompareTo(b.y);
                 return a.x.CompareTo(b.x);
-            });
+            }); //Sort the board out to check diaoonals
 
             CheckDiagonals(diagonalPositions, board, colour, takePieces);
         }
@@ -80,10 +80,11 @@ public class PieceCaptureHandler : MonoBehaviour
 
     private bool CheckDiagonals(List<Vector2> diagonalPositions, string[,] board, string colour, bool takePieces)
     {
-        bool captured = CheckCapturesOnly(diagonalPositions, board, colour, takePieces);
+        bool captured = CheckCapturesOnly(diagonalPositions, board, colour, takePieces); //Check for captures and traps
         return captured;
     }
 
+    //Check for any captures used by easy AI to check potential captures
     public bool CheckCapturesOnly(List<Vector2> diagonalPositions, string[,] board, string colour, bool takePieces)
     {
         CaptureData data = CapturePieces(diagonalPositions, board, colour);
@@ -111,7 +112,8 @@ public class PieceCaptureHandler : MonoBehaviour
         return false;
     }
 
-    public bool CheckTrapsOnly(List<Vector2> diagonalPositions, string[,] board, string colour, bool takePieces)
+    //CHeck for available traps
+    public bool CheckTrapsOnly(List<Vector2> diagonalPositions, string[,] board, string colour, bool takePieces) 
     {
         CaptureData data = CapturePieces(diagonalPositions, board, colour);
         if (data.CapturePositions == null) return false;
@@ -139,6 +141,13 @@ public class PieceCaptureHandler : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Uses diagonal positions to get captures and traps
+    /// </summary>
+    /// <param name="diagonalPositions"> All diagonal positions from placement of piece</param>
+    /// <param name="board"> current board being checked for Captures and traps</param>
+    /// <param name="colour"> not used, but checking for colour</param>
+    /// <returns>Capture Data, A list of all capture positions and first and last piece colour</returns>
     public CaptureData CapturePieces(List<Vector2> diagonalPositions, string[,] board, string colour)
     {
         int size = diagonalPositions.Count;
@@ -146,18 +155,18 @@ public class PieceCaptureHandler : MonoBehaviour
 
         for (int i = 0; i < size - 2; i++)
         {
-            string firstPieceColour = board[(int)diagonalPositions[i].x, (int)diagonalPositions[i].y];
+            string firstPieceColour = board[(int)diagonalPositions[i].x, (int)diagonalPositions[i].y]; //Set first piece colour
             if (firstPieceColour == "_") continue;
 
             for (int j = i + 2; j < size; j++)
             {
-                string lastPieceColour = board[(int)diagonalPositions[j].x, (int)diagonalPositions[j].y];
+                string lastPieceColour = board[(int)diagonalPositions[j].x, (int)diagonalPositions[j].y]; //Set last piece colour
                 if (lastPieceColour != firstPieceColour) continue;
 
                 bool validCapture = true;
                 List<Vector2> capturePositions = new List<Vector2>();
 
-                for (int k = i + 1; k < j; k++)
+                for (int k = i + 1; k < j; k++) //Check if middle pieces different
                 {
                     string middlePieceColour = board[(int)diagonalPositions[k].x, (int)diagonalPositions[k].y];
                     if (middlePieceColour == "_" || middlePieceColour == firstPieceColour)
@@ -168,7 +177,7 @@ public class PieceCaptureHandler : MonoBehaviour
                     capturePositions.Add(diagonalPositions[k]);
                 }
 
-                if (validCapture)
+                if (validCapture) //If valid capture return capture data
                 {
                     CaptureData captureData = new CaptureData()
                     {
@@ -212,7 +221,7 @@ public class PieceCaptureHandler : MonoBehaviour
         }
     }
 
-    public FaceBoard GetPiece(int x, int y)
+    public FaceBoard GetPiece(int x, int y) //Get piece from list
     {
         foreach (var piece in pieces)
         {
@@ -224,7 +233,7 @@ public class PieceCaptureHandler : MonoBehaviour
         return null;
     }
 
-    private void ShowBoard(string[,] board)
+    private void ShowBoard(string[,] board) //Show board for debugging
     {
         string debugBoard = "";
         for (int i = 0; i < board.GetLength(0); i++)

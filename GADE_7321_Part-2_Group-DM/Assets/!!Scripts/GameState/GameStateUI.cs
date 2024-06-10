@@ -77,7 +77,7 @@ public class GameStateUI : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public void ShowEndGameScreen()
+    public void ShowEndGameScreen() //Show the game end facts and winner
     {
          int redPieces = faceFullHandler.GetFullAmountOfPieces().Item1;
          int bluePieces = faceFullHandler.GetFullAmountOfPieces().Item2;
