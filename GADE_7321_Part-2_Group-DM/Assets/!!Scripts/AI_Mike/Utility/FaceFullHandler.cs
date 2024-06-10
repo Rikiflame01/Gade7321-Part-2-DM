@@ -1,25 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
+/// <summary>
+/// Manages the game state for a 3D cube-like board game, handling AI moves,
+/// checking if boards are full, and counting pieces for endgame evaluation.
+/// </summary>
 public class FaceFullHandler : MonoBehaviour
 {
+    [Header("Game State Data")]
+    [Tooltip("Reference to the GameStateData scriptable object.")]
     [SerializeField] private GameStateData gameStateData;
+
+    [Header("Board Manager")]
+    [Tooltip("Reference to the BoardManager component.")]
     [SerializeField] private BoardManager boardManager;
-    //Handle Face Full Logic
-    
+
+    [Header("Events")]
     public UnityEvent<int> onAIMove;
 
-    //If we change face play AI move on different board face
+    #region Handle Player Change Face
+
+    // Handle face change and AI move
     public void HandlePlayerChangeFace()
     {
-        if(!gameStateData.aiPlaying) return;
-        
-        if(CheckIfBoardFull()) return;
-        
+        if (!gameStateData.aiPlaying) return;
+        if (CheckIfBoardFull()) return;
         if (gameStateData.difficulty is Difficulty.Easy or Difficulty.Medium or Difficulty.Hard)
         {
             StartCoroutine(PlayAIMove());
@@ -47,18 +54,26 @@ public class FaceFullHandler : MonoBehaviour
                 return false;
             }
         }
-        
+
         return false;
     }
 
-    //Play the move from AI after changing face
-    IEnumerator PlayAIMove()
+    #endregion
+
+    #region AI Move
+
+    private IEnumerator PlayAIMove()
     {
         yield return new WaitForSeconds(1f);
-        if(!gameStateData.aiPlaying) yield return null;
+        if (!gameStateData.aiPlaying) yield return null;
         onAIMove?.Invoke(gameStateData.currentBoard);
     }
 
+    #endregion
+
+    #region Piece Counting
+
+    // Get the total number of pieces for each color
     public (int, int) GetFullAmountOfPieces()
     {
         int redPieces = 0;
@@ -66,14 +81,14 @@ public class FaceFullHandler : MonoBehaviour
 
         // Initialize boards
         List<string[,]> boards = new List<string[,]>
-    {
-        boardManager.BoardOne,
-        boardManager.BoardTwo,
-        boardManager.BoardThree,
-        boardManager.BoardFour,
-        boardManager.BoardFive,
-        boardManager.BoardSix
-    };
+        {
+            boardManager.BoardOne,
+            boardManager.BoardTwo,
+            boardManager.BoardThree,
+            boardManager.BoardFour,
+            boardManager.BoardFive,
+            boardManager.BoardSix
+        };
 
         // Define the size of the boards
         int boardSize = boards[0].GetLength(0) - 1;
@@ -132,6 +147,5 @@ public class FaceFullHandler : MonoBehaviour
         }
     }
 
-
-
+    #endregion
 }
