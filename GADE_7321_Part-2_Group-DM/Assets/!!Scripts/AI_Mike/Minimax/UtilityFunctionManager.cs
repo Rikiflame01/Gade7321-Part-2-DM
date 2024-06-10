@@ -39,7 +39,7 @@ public class UtilityFunctionManager : MonoBehaviour
     /// Evaluates the board based on various factors and returns a utility value.
     /// </summary>
     /// <param name="board">The game board.</param>
-    /// <param name="currentPlayerColour">The current player's color.</param>
+    /// <param name="currentPlayerColour">The current player's colour.</param>
     /// <returns>The utility value of the board for the current player.</returns>
     public float EvaluateBoard(string[,] board, string currentPlayerColour)
     {
@@ -65,11 +65,11 @@ public class UtilityFunctionManager : MonoBehaviour
     #region Private Methods
 
     /// <summary>
-    /// Counts the pieces of the specified color on the board.
+    /// Counts the pieces of the specified colour on the board.
     /// </summary>
     /// <param name="board">The game board.</param>
-    /// <param name="colour">The color of the pieces to count.</param>
-    /// <returns>The count of pieces of the specified color.</returns>
+    /// <param name="colour">The colour of the pieces to count.</param>
+    /// <returns>The count of pieces of the specified colour.</returns>
     private int PieceCount(string[,] board, string colour)
     {
         int count = 0;
@@ -84,7 +84,7 @@ public class UtilityFunctionManager : MonoBehaviour
     /// Calculates the mobility of the specified player (number of possible moves).
     /// </summary>
     /// <param name="board">The game board.</param>
-    /// <param name="colour">The player's color.</param>
+    /// <param name="colour">The player's colour.</param>
     /// <returns>The number of possible moves for the player.</returns>
     private int Mobility(string[,] board, string colour)
     {
@@ -95,7 +95,7 @@ public class UtilityFunctionManager : MonoBehaviour
     /// Counts the corners controlled by the specified player.
     /// </summary>
     /// <param name="board">The game board.</param>
-    /// <param name="colour">The player's color.</param>
+    /// <param name="colour">The player's colour.</param>
     /// <returns>The count of corners controlled by the player.</returns>
     private int CornerControl(string[,] board, string colour)
     {
@@ -112,7 +112,7 @@ public class UtilityFunctionManager : MonoBehaviour
     /// Counts the edges controlled by the specified player.
     /// </summary>
     /// <param name="board">The game board.</param>
-    /// <param name="colour">The player's color.</param>
+    /// <param name="colour">The player's colour.</param>
     /// <returns>The count of edges controlled by the player.</returns>
     private int EdgeStability(string[,] board, string colour)
     {
@@ -134,7 +134,7 @@ public class UtilityFunctionManager : MonoBehaviour
     /// Calculates the positional weighting based on the specified player's pieces.
     /// </summary>
     /// <param name="board">The game board.</param>
-    /// <param name="colour">The player's color.</param>
+    /// <param name="colour">The player's colour.</param>
     /// <returns>The positional weighting value.</returns>
     private int PositionalWeighting(string[,] board, string colour)
     {
@@ -165,7 +165,7 @@ public class UtilityFunctionManager : MonoBehaviour
     /// Calculates the capturing potential for the specified player.
     /// </summary>
     /// <param name="board">The game board.</param>
-    /// <param name="colour">The player's color.</param>
+    /// <param name="colour">The player's colour.</param>
     /// <returns>The capturing potential value.</returns>
     private int PieceCapturingPotential(string[,] board, string colour)
     {
@@ -186,7 +186,7 @@ public class UtilityFunctionManager : MonoBehaviour
     /// </summary>
     /// <param name="board">The current board state.</param>
     /// <param name="move">The move to apply.</param>
-    /// <param name="currentPlayerColour">The current player's color.</param>
+    /// <param name="currentPlayerColour">The current player's colour.</param>
     /// <returns>The new board state after the move.</returns>
     private string[,] ApplyMove(string[,] board, Vector2 move, string currentPlayerColour)
     {

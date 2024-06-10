@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// The PlayerInputManager script captures player names through input fields,
-/// assigns colors randomly to each player, and changes scenes upon successful submission.
-/// It handles button click events to submit names and color assignments. If a player name
+/// assigns colours randomly to each player, and changes scenes upon successful submission.
+/// It handles button click events to submit names and colour assignments. If a player name
 /// is missing, it logs a reminder; otherwise, it loads the specified scene.
 /// The script also manages event listeners for the submit button.
 /// </summary>
@@ -24,7 +24,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (submitButton != null)
         {
-            submitButton.onClick.AddListener(SubmitNamesAndRandomizeColors);
+            submitButton.onClick.AddListener(SubmitNamesAndRandomizeColours);
         }
         else
         {
@@ -39,7 +39,7 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    private void SubmitNamesAndRandomizeColors()
+    private void SubmitNamesAndRandomizeColours()
     {
         if (player1InputField == null || player2InputField == null || playerInfo == null)
         {
@@ -137,7 +137,7 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    public void EnterDifficultScne()
+    public void EnterDifficultScene()
     {
         if (gameData != null)
         {
@@ -155,7 +155,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (submitButton != null)
         {
-            submitButton.onClick.RemoveListener(SubmitNamesAndRandomizeColors);
+            submitButton.onClick.RemoveListener(SubmitNamesAndRandomizeColours);
         }
     }
 

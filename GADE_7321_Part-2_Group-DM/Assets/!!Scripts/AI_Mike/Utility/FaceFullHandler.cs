@@ -73,7 +73,7 @@ public class FaceFullHandler : MonoBehaviour
 
     #region Piece Counting
 
-    // Get the total number of pieces for each color
+    // Get the total number of pieces for each colour
     public (int, int) GetFullAmountOfPieces()
     {
         int redPieces = 0;

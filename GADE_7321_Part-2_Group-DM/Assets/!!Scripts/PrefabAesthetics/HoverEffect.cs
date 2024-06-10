@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Changes the color of a piece when the mouse hovers over it, with a smooth transition.
+/// Changes the colour of a piece when the mouse hovers over it, with a smooth transition.
 /// </summary>
 public class HoverEffect : MonoBehaviour
 {
@@ -11,14 +11,14 @@ public class HoverEffect : MonoBehaviour
     public GameStateData gameStateData;
 
     private Renderer renderer;
-    private Color originalColor;
-    private Coroutine colorCoroutine;
+    private Color originalColour;
+    private Coroutine colourCoroutine;
     private static HoverEffect currentHoveredEffect = null;
 
     void Start()
     {
         renderer = GetComponent<Renderer>();
-        originalColor = renderer.material.color;
+        originalColour = renderer.material.color;
     }
 
     void Update()
@@ -42,11 +42,11 @@ public class HoverEffect : MonoBehaviour
                 {
                     if (currentHoveredEffect != null)
                     {
-                        currentHoveredEffect.ResetColor();
+                        currentHoveredEffect.ResetColour();
                     }
 
                     currentHoveredEffect = hitEffect;
-                    currentHoveredEffect.SetHoverColor();
+                    currentHoveredEffect.SetHoverColour();
                 }
                 break;
             }
@@ -54,61 +54,61 @@ public class HoverEffect : MonoBehaviour
 
         if (!hitGridPiece && currentHoveredEffect != null)
         {
-            currentHoveredEffect.ResetColor();
+            currentHoveredEffect.ResetColour();
             currentHoveredEffect = null;
         }
     }
 
-    private void SetHoverColor()
+    private void SetHoverColour()
     {
-        if (colorCoroutine != null)
+        if (colourCoroutine != null)
         {
-            StopCoroutine(colorCoroutine);
+            StopCoroutine(colourCoroutine);
         }
-        colorCoroutine = StartCoroutine(LerpColor(GetHoverColor(), 1f));
+        colourCoroutine = StartCoroutine(LerpColour(GetHoverColour(), 1f));
     }
 
-    public void ResetColor()
+    public void ResetColour()
     {
-        if (colorCoroutine != null)
+        if (colourCoroutine != null)
         {
-            StopCoroutine(colorCoroutine);
+            StopCoroutine(colourCoroutine);
         }
-        colorCoroutine = StartCoroutine(LerpColor(originalColor, 1f));
+        colourCoroutine = StartCoroutine(LerpColour(originalColour, 1f));
     }
 
-    private Color GetHoverColor()
+    private Color GetHoverColour()
     {
-        Color hoverColor = originalColor;
+        Color hoverColour = originalColour;
         if (gameStateData != null)
         {
             if (gameStateData.playerTurn == Player.Blue)
             {
-                ColorUtility.TryParseHtmlString("#0000FF", out hoverColor); // Blue
+                ColorUtility.TryParseHtmlString("#0000FF", out hoverColour); // Blue
             }
             else if (gameStateData.playerTurn == Player.Red)
             {
-                ColorUtility.TryParseHtmlString("#FF0000", out hoverColor); // Red
+                ColorUtility.TryParseHtmlString("#FF0000", out hoverColour); // Red
             }
 
-            hoverColor.a = 0.5f; // Set alpha to 50%
+            hoverColour.a = 0.5f; // Set alpha to 50%
         }
-        return hoverColor;
+        return hoverColour;
     }
 
-    private IEnumerator LerpColor(Color targetColor, float duration)
+    private IEnumerator LerpColour(Color targetColour, float duration)
     {
-        Color startColor = renderer.material.color;
+        Color startColour = renderer.material.color;
         float time = 0f;
 
         while (time < duration)
         {
             time += Time.deltaTime;
-            renderer.material.color = Color.Lerp(startColor, targetColor, time / duration);
+            renderer.material.color = Color.Lerp(startColour, targetColour, time / duration);
             yield return null;
         }
 
-        renderer.material.color = targetColor;
-        colorCoroutine = null;
+        renderer.material.color = targetColour;
+        colourCoroutine = null;
     }
 }

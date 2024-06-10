@@ -59,7 +59,9 @@ public class AIEasyHandler : MonoBehaviour
     IEnumerator WaitForAI()
     {
         yield return new WaitForSeconds(0.5f);
-        gameStateData.aiPlaying = false;
+        if (gameStateData != null) { 
+               gameStateData.aiPlaying = false; 
+        }
     }
 
     private bool IsBoardFull(string[,] board) // Check if board full
@@ -88,14 +90,14 @@ public class AIEasyHandler : MonoBehaviour
         return possibleMoves;
     }
     
-    private Vector2 GetCaptureMove(string[,] board, string currentPlayerColor) //Make a copy of the board and check for captures
+    private Vector2 GetCaptureMove(string[,] board, string currentPlayerColour) //Make a copy of the board and check for captures
     {
         List<Vector2> possibleMoves = GetAllPossibleMoves(board);
         foreach (var move in possibleMoves)
         {
             string[,] simulatedBoard = (string[,])board.Clone();
-            simulatedBoard[(int)move.x, (int)move.y] = currentPlayerColor;
-            if (HasCapture(simulatedBoard, (int)move.x, (int)move.y, currentPlayerColor))
+            simulatedBoard[(int)move.x, (int)move.y] = currentPlayerColour;
+            if (HasCapture(simulatedBoard, (int)move.x, (int)move.y, currentPlayerColour))
             {
                 return move;
             }
