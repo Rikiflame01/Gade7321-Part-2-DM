@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -7913771340421704869}
   m_Layer: 3
   m_Name: Grid
-  m_TagString: Untagged
+  m_TagString: GridPiece
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120,14 +120,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0fa113ca2f04afabd995cec76ee98a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  face: 10
   isOccupied: 0
   <Coordinates>k__BackingField: {x: 0, y: 0, z: 0}
   spherePiece: {fileID: 3262811514825071465, guid: 23dd7755d14d4eb41bd4a31d02d5ecf9,
     type: 3}
   redMat: {fileID: 2100000, guid: f9c44c7d9ed534342a3d8f3e23cb2801, type: 2}
   blueMat: {fileID: 2100000, guid: 3f2d2baa945d2544dacd4b46a15b171f, type: 2}
-  redColour: {r: 0, g: 0.043137256, b: 0.7490196, a: 0}
-  blueColour: {r: 0.9911022, g: 0.3813261, b: 0.5394797, a: 1}
 --- !u!114 &-4257023128281344838
 MonoBehaviour:
   m_ObjectHideFlags: 0
